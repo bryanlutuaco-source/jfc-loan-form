@@ -666,14 +666,13 @@ function submitForm() {
   statusEl.textContent = 'Submitting... please wait';
   statusEl.style.color = '#555';
 
-  // *** PASTE YOUR APPS SCRIPT URL BELOW ***
-  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyem2X7SeW7CRKwQaiqnlRFi61HUhwJyR3kCWr8ubasKqWgKDpq1We47Mz8FmySjwUOXg/exec";
+  var SCRIPT_URL = "https://script.google.com/macros/s/YOUR_NEW_SCRIPT_URL/exec";
 
   var formData = {
     date:                    val('formDate'),
     amountApplied:           val('amountApplied'),
     loanTerm:                val('loanTerm'),
-    loanPurpose:             getChecked('loanPurpose') + (val('purposeOther') ? ' - ' + val('purposeOther') : ''),
+    loanPurpose:             getChecked('loanPurpose'),
     howFound:                getChecked('howFound'),
     firstName:               val('borrowerFirst'),
     middleName:              val('borrowerMiddle'),
@@ -699,57 +698,35 @@ function submitForm() {
     dateOfEmployment:        val('dateOfEmployment'),
     sssTin:                  val('sssTin'),
     coBorrower1Name:         val('coBorrower1Name'),
-    coBorrower1Address:      val('coBorrower1Address'),
-    coBorrower1Contact:      val('coBorrower1Contact'),
-    coBorrower1Company:      val('coBorrower1Company'),
-    coBorrower1Email:        val('coBorrower1Email'),
-    coBorrower1Location:     val('coBorrower1Location'),
-    coBorrower1Position:     val('coBorrower1Position'),
-    coBorrower1DateEmployed: val('coBorrower1DateEmployed'),
-    coBorrower1EmployeeNum:  val('coBorrower1EmployeeNum'),
     coBorrower2Name:         val('coBorrower2Name'),
-    coBorrower2Address:      val('coBorrower2Address'),
-    coBorrower2Contact:      val('coBorrower2Contact'),
-    coBorrower2Company:      val('coBorrower2Company'),
-    coBorrower2Email:        val('coBorrower2Email'),
-    coBorrower2Location:     val('coBorrower2Location'),
-    coBorrower2Position:     val('coBorrower2Position'),
-    coBorrower2DateEmployed: val('coBorrower2DateEmployed'),
-    coBorrower2EmployeeNum:  val('coBorrower2EmployeeNum'),
     superiorFirstName:       val('superiorFirst'),
-    superiorMiddleName:      val('superiorMiddle'),
     superiorLastName:        val('superiorLast'),
     superiorPosition:        val('superiorPosition'),
-    superiorYearsService:    val('superiorYearsService'),
-    superiorLandline:        val('superiorLandline'),
-    superiorMobile:          val('superiorMobile'),
     loanProceeds:            getChecked('loanProceeds'),
     accountNumber:           val('accountNumber'),
-    timestamp:               new Date().toISOString()
+    timestamp:               new Date().toLocaleString()
   };
 
-  console.log("Submitting:", formData);
+  console.log("submitForm called!");
+  console.log("Data:", JSON.stringify(formData));
 
-  var params = new URLSearchParams();
-  params.append("data", JSON.stringify(formData));
+  // Send as GET request (appended to URL)
+  var url = SCRIPT_URL + "?data=" + encodeURIComponent(JSON.stringify(formData));
 
-  fetch(SCRIPT_URL, {
-    method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: params.toString()
+  fetch(url, {
+    method: "GET",
+    mode: "no-cors"
   })
   .then(function() {
-    statusEl.textContent = "Form Submitted Successfully!";
+    statusEl.textContent = "✅ Form Submitted Successfully!";
     statusEl.style.color = "green";
-    console.log("Submitted successfully");
+    console.log("Done!");
   })
   .catch(function(error) {
-    console.error("Error:", error);
-    statusEl.textContent = "Error: " + error.message;
+    statusEl.textContent = "❌ Error: " + error.message;
     statusEl.style.color = "red";
+    console.error("Fetch error:", error);
   });
 }
-</script>
 </body>
 </html>
