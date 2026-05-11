@@ -722,11 +722,12 @@ function submitForm() {
     statusEl.style.color = "green";
     console.log("Done!");
   })
-  .catch(function(error) {
+.catch(function(error) {
     statusEl.textContent = "❌ Error: " + error.message;
     statusEl.style.color = "red";
     console.error("Fetch error:", error);
   });
 }
+</script>  ← ✅ ADD THIS
 </body>
 </html>
