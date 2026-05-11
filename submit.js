@@ -1,37 +1,9 @@
-function updateSuperiorFullName() {
-  var first  = document.getElementById('superiorFirst').value;
-  var middle = document.getElementById('superiorMiddle').value;
-  var last   = document.getElementById('superiorLast').value;
-  document.getElementById('superiorFullNameDisplay').textContent =
-    [first, middle, last].filter(Boolean).join(' ');
-}
-
-function previewSign(event, imgId) {
-  var file = event.target.files[0];
-  if (!file) return;
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    document.getElementById(imgId).src = e.target.result;
-  };
-  reader.readAsDataURL(file);
-}
-
-function getChecked(name) {
-  return Array.from(document.querySelectorAll('input[name="' + name + '"]:checked'))
-              .map(function(cb) { return cb.value; }).join(', ');
-}
-
-function val(id) {
-  var el = document.getElementById(id);
-  return el ? el.value.trim() : '';
-}
-
 function submitForm() {
   var statusEl = document.getElementById('submitStatus');
   statusEl.textContent = 'Submitting... please wait';
   statusEl.style.color = '#555';
 
-  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxX_hV-SzjeNuLyT4gMljnW5xvKMrlDL_RPCpuMxYiw3s1EhunPJVkNuSeoCeuyk330NA/exec";
+  var SCRIPT_URL = "https://script.google.com/macros/s/YOUR_NEW_SCRIPT_URL/exec";
 
   var formData = {
     date:                    val('formDate'),
@@ -44,29 +16,43 @@ function submitForm() {
     lastName:                val('borrowerLast'),
     civilStatus:             getChecked('civilStatus'),
     dateOfBirth:             val('dateOfBirth'),
+    dependentsMinor:         val('dependentsMinor'),
+    dependentsAdult:         val('dependentsAdult'),
+    residenceOwnership:      getChecked('residenceOwnership'),
     presentAddress:          val('presentAddress'),
+    stayYears:               val('presentStayYears'),
+    stayMonths:              val('presentStayMonths'),
     provincialAddress:       val('provincialAddress'),
     homePhone:               val('homePhone'),
     mobilePhone:             val('mobilePhone'),
     workPhone:               val('workPhone'),
     personalEmail:           val('personalEmail'),
+    storeEmail:              val('storeEmail'),
     company:                 val('company'),
+    location:                val('location'),
     position:                val('position'),
     employeeNumber:          val('employeeNumber'),
+    dateOfEmployment:        val('dateOfEmployment'),
+    sssTin:                  val('sssTin'),
+    coBorrower1Name:         val('coBorrower1Name'),
+    coBorrower2Name:         val('coBorrower2Name'),
+    superiorFirstName:       val('superiorFirst'),
+    superiorLastName:        val('superiorLast'),
+    superiorPosition:        val('superiorPosition'),
+    loanProceeds:            getChecked('loanProceeds'),
+    accountNumber:           val('accountNumber'),
     timestamp:               new Date().toLocaleString()
   };
 
   console.log("submitForm called!");
   console.log("Data:", JSON.stringify(formData));
 
-  var params = new URLSearchParams();
-  params.append("data", JSON.stringify(formData));
+  // Send as GET request (appended to URL)
+  var url = SCRIPT_URL + "?data=" + encodeURIComponent(JSON.stringify(formData));
 
-  fetch(SCRIPT_URL, {
-    method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: params.toString()
+  fetch(url, {
+    method: "GET",
+    mode: "no-cors"
   })
   .then(function() {
     statusEl.textContent = "✅ Form Submitted Successfully!";
@@ -79,36 +65,3 @@ function submitForm() {
     console.error("Fetch error:", error);
   });
 }
-
-window.addEventListener('load', function() {
-  var hrFile = document.getElementById('hrFileInput');
-  if (hrFile) {
-    hrFile.addEventListener('change', function(event) {
-      var file = event.target.files[0];
-      if (!file) return;
-      var reader = new FileReader();
-      reader.onload = function(e) {
-        var img = document.getElementById('hrPreviewImg');
-        img.src = e.target.result;
-        img.style.display = 'block';
-      };
-      reader.readAsDataURL(file);
-    });
-  }
-
-  var sigUpload = document.getElementById('signatureUpload');
-  if (sigUpload) {
-    sigUpload.addEventListener('change', function(event) {
-      var file = event.target.files[0];
-      if (!file) return;
-      var reader = new FileReader();
-      reader.onload = function(e) {
-        var img = document.getElementById('signaturePreview');
-        img.src = e.target.result;
-        img.style.display = 'block';
-        document.getElementById('signatureUpload').style.display = 'none';
-      };
-      reader.readAsDataURL(file);
-    });
-  }
-});
