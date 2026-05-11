@@ -596,7 +596,11 @@ I do hereby authorize Jollibee Foods Corporation Employees' Multi-Purpose Cooper
 
 <!-- SUBMIT BUTTON -->
 <div style="margin:20px 0; text-align:center;">
-  <button type="button" onclick="submitForm()"
+// HTML: <button id="myButton">Submit</button>
+document.getElementById('myButton').addEventListener('click', function() {
+    // Your submission logic here
+    console.log("Form submitted via event listener");
+});
       style="padding:12px 30px; background:#f4b042; border:none; font-size:16px;
              font-weight:bold; cursor:pointer; border-radius:6px;">
     SUBMIT FORM
