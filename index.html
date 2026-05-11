@@ -608,74 +608,68 @@ I do hereby authorize Jollibee Foods Corporation Employees' Multi-Purpose Cooper
 
 <!-- ===== ALL SCRIPTS ===== -->
 <script>
-
-/* --- Superior full name auto-display --- */
 function updateSuperiorFullName() {
-  const first  = document.getElementById('superiorFirst').value;
-  const middle = document.getElementById('superiorMiddle').value;
-  const last   = document.getElementById('superiorLast').value;
+  var first  = document.getElementById('superiorFirst').value;
+  var middle = document.getElementById('superiorMiddle').value;
+  var last   = document.getElementById('superiorLast').value;
   document.getElementById('superiorFullNameDisplay').textContent =
     [first, middle, last].filter(Boolean).join(' ');
 }
 
 function previewSign(event, imgId) {
-  const file = event.target.files[0];
+  var file = event.target.files[0];
   if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => { document.getElementById(imgId).src = e.target.result; };
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    document.getElementById(imgId).src = e.target.result;
+  };
   reader.readAsDataURL(file);
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.getElementById('hrFileInput').addEventListener('change', function(event) {
+  var file = event.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = document.getElementById('hrPreviewImg');
+    img.src = e.target.result;
+    img.style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+});
 
-  document.getElementById('hrFileInput').addEventListener('change', function(event) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = e => {
-        const img = document.getElementById('hrPreviewImg');
-        img.src = e.target.result;
-        img.style.display = 'block';
-      };
-      reader.readAsDataURL(file);
-    }
-  });
-
-  document.getElementById('signatureUpload').addEventListener('change', function(event) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = e => {
-        const img = document.getElementById('signaturePreview');
-        img.src = e.target.result;
-        img.style.display = 'block';
-        document.getElementById('signatureUpload').style.display = 'none';
-      };
-      reader.readAsDataURL(file);
-    }
-  });
-
+document.getElementById('signatureUpload').addEventListener('change', function(event) {
+  var file = event.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = document.getElementById('signaturePreview');
+    img.src = e.target.result;
+    img.style.display = 'block';
+    document.getElementById('signatureUpload').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
 });
 
 function getChecked(name) {
-  return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`))
-              .map(cb => cb.value).join(', ');
+  return Array.from(document.querySelectorAll('input[name="' + name + '"]:checked'))
+              .map(function(cb) { return cb.value; }).join(', ');
 }
 
 function val(id) {
-  const el = document.getElementById(id);
+  var el = document.getElementById(id);
   return el ? el.value.trim() : '';
 }
 
 function submitForm() {
-  const statusEl = document.getElementById('submitStatus');
-  statusEl.textContent = '⏳ Submitting... please wait';
+  var statusEl = document.getElementById('submitStatus');
+  statusEl.textContent = 'Submitting... please wait';
   statusEl.style.color = '#555';
 
-  // ⚠️ PASTE YOUR NEW SCRIPT URL BELOW
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwubUYRMPYVcWRyZfdMD-T6L_P1VtfXKjKJ2NHhqi5-VRBD3YFdVD-ydJsnfx7qCupvfw/exec";
+  // *** PASTE YOUR APPS SCRIPT URL BELOW ***
+  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxg8mi30OTb522jGknjadqj-b33pFghwrNrYqLJP4KPe32kb6lqIPsRktNCw0M38R7y/exec";
 
-  const formData = {
+  var formData = {
     date:                    val('formDate'),
     amountApplied:           val('amountApplied'),
     loanTerm:                val('loanTerm'),
@@ -734,10 +728,9 @@ function submitForm() {
     timestamp:               new Date().toISOString()
   };
 
-  console.log("Sending data:", formData); // check browser console
+  console.log("Submitting:", formData);
 
-  // Build URL with data as query parameter (most reliable method)
-  const params = new URLSearchParams();
+  var params = new URLSearchParams();
   params.append("data", JSON.stringify(formData));
 
   fetch(SCRIPT_URL, {
@@ -746,15 +739,17 @@ function submitForm() {
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: params.toString()
   })
-  .then(() => {
-    statusEl.textContent = "✅ Form Submitted Successfully!";
+  .then(function() {
+    statusEl.textContent = "Form Submitted Successfully!";
     statusEl.style.color = "green";
+    console.log("Submitted successfully");
   })
-  .catch(error => {
+  .catch(function(error) {
     console.error("Error:", error);
-    statusEl.textContent = "❌ Error: " + error.message;
+    statusEl.textContent = "Error: " + error.message;
     statusEl.style.color = "red";
   });
 }
+</script>
 </body>
 </html>
