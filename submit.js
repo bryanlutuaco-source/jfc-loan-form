@@ -31,7 +31,7 @@ function submitForm() {
   statusEl.textContent = 'Submitting... please wait';
   statusEl.style.color = '#555';
 
-  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxg8mi30OTb522jGknjadqj-b33pFghwrNrYqLJP4KPe32kb6lqIPsRktNCw0M38R7y/exec";
+  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxX_hV-SzjeNuLyT4gMljnW5xvKMrlDL_RPCpuMxYiw3s1EhunPJVkNuSeoCeuyk330NA/exec";
 
   var formData = {
     date:                    val('formDate'),
