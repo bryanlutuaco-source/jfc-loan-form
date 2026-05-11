@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>JFC COOP Multi-Purpose Loan Form</title>
+<style>
+body { font-family: "Times New Roman", serif; background: #dcdcdc; }
+table { width: 100%; border-collapse: collapse; }
+td { border: 1px solid black; padding: 6px; font-size: 14px; }
+.gray { background: #d9d9d9; }
+.yellow { background: yellow; font-weight: bold; font-size: 14px; padding: 2px 4px; }
+.blackbar { background: black; color: white; font-weight: bold; }
+.input { width: 100%; border: none; border-bottom: 1px solid black; outline: none; background: transparent; }
+.small { width: 60px; border: none; border-bottom: 1px solid black; }
+.checkbox { width: 18px; height: 18px; }
+.center { text-align: center; }
+.right { text-align: right; }
+.bold { font-weight: bold; }
+
+.container { width: 1080px; margin: auto; }
+.main-grid { display: grid; grid-template-columns: 62% 38%; gap: 8px; }
+.box { border: 1px solid black; background: #efefef; padding: 6px; }
+.small-input { width: 80px; border: none; border-bottom: 1px solid black; }
+.checkbox-group div { margin: 2px 0; font-size: 14px; }
+.checkbox-group input { width: 14px; height: 14px; margin-right: 6px; }
+.row { display: flex; gap: 8px; margin-top: 8px; }
+.date { margin: 10px 0; font-size: 16px; }
+.date input { border: none; border-bottom: 1px solid black; width: 220px; }
+
+input[type="checkbox"] {
+  appearance: none; -webkit-appearance: none;
+  width: 14px; height: 14px; border: 1.5px solid black;
+  margin-right: 6px; vertical-align: middle; cursor: pointer; position: relative;
+}
+input[type="checkbox"]:checked::after {
+  content: "✓"; font-size: 12px; position: absolute; top: -2px; left: 1px;
+}
+
+.sig-cell { text-align: center; vertical-align: middle; padding: 10px; }
+.upload-area { border: 1px dashed black; height: 70px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.file-input { display: none; }
+.sig-preview { max-height: 60px; max-width: 100%; }
+.justify-text { text-align: justify; line-height: 1.6; font-family: "Times New Roman", serif; font-size: 14px; }
+.section-title { text-align: center; font-weight: bold; margin-top: 15px; }
+.list-table { width: 100%; margin-top: 5px; font-size: 14px; }
+.list-table td { vertical-align: top; padding: 2px 10px 2px 0; border: none; }
+</style>
+</head>
+<body>
+
+<form id="loanForm">
+
+<!-- HEADER IMAGE -->
+<table style="margin-bottom:20px;">
+<tr>
+<td align="center">
+  <img src="https://i.postimg.cc/P5cCW36Z/Screenshot-2026-03-26-112456.png"
+       alt="Logo" style="max-width:1120px; width:100%; height:auto; display:block;">
+</td>
+</tr>
+</table>
+
+<!-- TITLE + INSTRUCTIONS -->
+<table style="font-family:Arial,sans-serif; border-collapse:collapse; margin-bottom:12px;">
+<tr>
+
+<td width="60%" valign="middle" style="padding-right:15px; border:none;">
+  <div style="background:linear-gradient(135deg,#000,#222); border-radius:12px; padding:35px 25px;
+              text-align:center; box-shadow:0 4px 10px rgba(0,0,0,.15); min-height:180px;
+              display:flex; flex-direction:column; justify-content:center; align-items:center;">
+    <div style="color:#f4b042; font-size:42px; font-weight:800; letter-spacing:2px;">MULTI-PURPOSE</div>
+    <div style="color:#fff; font-size:34px; font-weight:700; letter-spacing:3px; margin-top:8px;">LOAN FORM</div>
+  </div>
+</td>
+
+<td width="40%" valign="top" style="border:none;">
+  <div style="border:1px solid #dcdcdc; background:#f9f9f9; border-radius:12px; padding:20px;
+              font-size:13px; color:#333; line-height:1.7; box-shadow:0 2px 8px rgba(0,0,0,.08); box-sizing:border-box;">
+    <div style="font-size:18px; font-weight:bold; color:#000; margin-bottom:12px; border-bottom:2px solid #f4b042; padding-bottom:6px;">INSTRUCTIONS</div>
+    <ol style="padding-left:18px; margin-top:0;">
+      <li style="margin-bottom:15px;">
+        Completely fill out all the highlighted portion of this form and validate the provided data.
+        (if there's correction, please click the Link
+        <a href="https://forms.gle/JZRAgpfknY48FpKf8" style="color:#0b63ce; font-weight:bold;">Amendment Form Link</a>)
+      </li>
+      <li style="margin-bottom:15px;">
+        Attach scanned copies of the following:
+        <ul style="margin-top:8px; padding-left:18px;">
+          <li>Updated Company ID or any government-issued ID</li>
+          <li>1-month latest pay slips (15th and 30th)</li>
+        </ul>
+      </li>
+    </ol>
+    <div style="font-size:18px; font-weight:bold; color:#000; margin-top:20px; margin-bottom:10px; border-bottom:2px solid #f4b042; padding-bottom:6px;">REMINDERS</div>
+    <ul style="margin-top:0; padding-left:18px; line-height:1.6; color:#333;">
+      <li>Additional documents may be required to facilitate the processing of the loan application.</li>
+      <li>Hard copies of this application form shall be submitted to JFC COOP Office (applicable only to loans amounting to Php 500,000.00 and above).</li>
+    </ul>
+    <div style="background:#fff3cd; border:1px solid #ffe08a; color:#856404; padding:12px; border-radius:8px; font-weight:bold; text-align:center; margin-top:15px;">
+      ONLY APPLICATIONS WITH COMPLETE DOCUMENTS WILL BE PROCESSED.
+    </div>
+  </div>
+</td>
+
+</tr>
+</table>
+
+<!-- DATE -->
+<div class="date">
+  <b>Date:</b> <input type="date" id="formDate">
+</div>
+
+<!-- LOAN DETAILS -->
+<div class="main-grid" style="margin-bottom:10px;">
+
+  <!-- LEFT -->
+  <div>
+    <b style="font-size:16px;">LOAN DETAILS</b>
+    <div class="row">
+
+      <div class="box" style="width:60%;">
+        <div class="yellow">Amount Applied</div>
+        Php <input class="input" id="amountApplied" type="number" placeholder="0.00">
+      </div>
+
+      <div class="box" style="width:40%;">
+        <div class="yellow">Term</div>
+        <!-- FIXED: was duplicate id="loanTerm" -->
+        <input class="input" id="loanTerm" type="text" placeholder="e.g. 12 months">
+      </div>
+
+    </div>
+
+    <div class="row">
+
+      <!-- PURPOSE -->
+      <div class="box" style="width:60%;">
+        <div class="yellow">Purpose of Loan (Please check [✓])</div>
+        <div class="checkbox-group" id="loanPurposeGroup">
+          <div><input type="checkbox" name="loanPurpose" value="Business/Investment"> Business/Investment</div>
+          <div><input type="checkbox" name="loanPurpose" value="Car and Maintenance"> Car and Maintenance</div>
+          <div><input type="checkbox" name="loanPurpose" value="Debt/Credit Card/Bills Payment"> Debt/Credit Card/Bills Payment</div>
+          <div><input type="checkbox" name="loanPurpose" value="Educational"> Educational</div>
+          <div><input type="checkbox" name="loanPurpose" value="Medical"> Medical</div>
+          <div><input type="checkbox" name="loanPurpose" value="Housing and Repairs"> Housing and Repairs</div>
+          <div><input type="checkbox" name="loanPurpose" value="Travel/Vacation"> Travel/Vacation</div>
+          <div><input type="checkbox" name="loanPurpose" value="Others"> Others</div>
+          <div>(Please Specify) <input class="small-input" id="purposeOther"></div>
+        </div>
+      </div>
+
+      <!-- HOW FOUND -->
+      <div class="box" style="width:40%;">
+        <div class="yellow">How did you find out about this product?</div>
+        <div style="font-size:13px;"><b>Through:</b><br>Please check [✓]</div>
+        <div class="checkbox-group" id="howFoundGroup">
+          <div><input type="checkbox" name="howFound" value="FB"> FB</div>
+          <div><input type="checkbox" name="howFound" value="Viber"> Viber</div>
+          <div><input type="checkbox" name="howFound" value="Email Ads"> Email Ads</div>
+          <div><input type="checkbox" name="howFound" value="Pre-Approved"> Pre-Approved</div>
+          <div><input type="checkbox" name="howFound" value="SMS"> SMS</div>
+          <div><input type="checkbox" name="howFound" value="Email"> Email</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="box">
+    <div class="yellow">
+      Member of other Financing Institutions?
+      <label><input type="checkbox" name="memberOtherFI" value="Yes"> Yes</label>
+      <label><input type="checkbox" name="memberOtherFI" value="No"> No</label>
+    </div>
+    <div style="margin-top:8px; font-size:14px;">
+      <div style="margin:4px 0;">
+        <label><input type="checkbox" name="fiType" value="Credit Card"> Credit Card (Bank Name:
+          <input style="width:80px; border:none; border-bottom:1px solid black;" id="creditCardBank">)
+        </label>
+      </div>
+      <div style="margin:4px 0;">
+        <label><input type="checkbox" name="fiType" value="Online Lending"> Online Lending Apps (Specify:
+          <input style="width:80px; border:none; border-bottom:1px solid black;" id="onlineLendingApp">)
+        </label>
+      </div>
+      <div style="margin:4px 0;"><label><input type="checkbox" name="fiType" value="Gcash"> Gcash</label></div>
+      <div style="margin:4px 0;"><label><input type="checkbox" name="fiType" value="Maya"> Maya</label></div>
+      <div style="margin-top:10px; text-align:center;">
+        <img src="https://i.postimg.cc/8k0fvZF1/unnamed.webp" alt="Supporting Image"
+             style="max-width:100%; height:auto; border:1px solid #ccc;">
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- BORROWER DETAILS -->
+<table style="font-family:'Times New Roman',serif; font-size:14px;">
+
+<tr>
+  <td style="font-weight:bold; width:16%;">Name</td>
+  <td style="font-weight:bold; width:30%;">First</td>
+  <td style="font-weight:bold; width:29%;">Middle</td>
+  <td style="font-weight:bold; width:25%;">Last</td>
+</tr>
+<tr style="background:#dfe3f5;">
+  <td></td>
+  <td><input class="input" id="borrowerFirst" type="text"></td>
+  <td><input class="input" id="borrowerMiddle" type="text"></td>
+  <td><input class="input" id="borrowerLast" type="text"></td>
+</tr>
+
+<tr>
+  <td colspan="2" style="font-weight:bold; padding:8px;">
+    Civil Status
+    <label style="margin-left:15px; font-weight:normal;"><input type="checkbox" name="civilStatus" value="Single"> Single</label>
+    <label style="margin-left:15px; font-weight:normal;"><input type="checkbox" name="civilStatus" value="Married"> Married</label>
+    <label style="margin-left:15px; font-weight:normal;"><input type="checkbox" name="civilStatus" value="Widowed"> Widowed</label>
+  </td>
+  <td style="font-weight:bold; padding:8px;">
+    Date of Birth (mm/dd/yyyy)<br>
+    <input type="date" class="input" id="dateOfBirth" style="margin-top:5px;">
+  </td>
+  <td style="font-weight:bold; padding:8px;">
+    Number of Dependents:<br>
+    <input type="number" id="dependentsMinor" style="width:40px;"> Minor
+    <input type="number" id="dependentsAdult" style="width:40px; margin-left:10px;"> Adult/s
+  </td>
+</tr>
+
+<tr style="background:yellow;">
+  <td colspan="4" style="padding:8px;">
+    <b>Residence Ownership</b>
+    <label style="margin-left:15px;"><input type="checkbox" name="residenceOwnership" value="Owned"> Owned</label>
+    <label style="margin-left:10px;"><input type="checkbox" name="residenceOwnership" value="Mortgaged"> Mortgaged</label>
+    <label style="margin-left:10px;"><input type="checkbox" name="residenceOwnership" value="Rented"> Rented
+      (Amt. P <input style="width:60px; border:none; border-bottom:1px solid #000;" id="rentAmount"> /mo)
+    </label>
+    <label style="margin-left:10px;"><input type="checkbox" name="residenceOwnership" value="with Relatives"> with Relatives</label>
+    <label style="margin-left:10px;"><input type="checkbox" name="residenceOwnership" value="Co. Quarters"> Co. Quarters</label>
+  </td>
+</tr>
+
+<tr>
+  <td colspan="4" style="font-weight:bold;">
+    Present Residence Address <span style="font-size:12px; font-style:italic;">(No/Street/Subd/Barangay/Municipality/City)</span>
+    <div style="height:25px; background:#dfe3f5; margin-top:5px;">
+      <input class="input" id="presentAddress" type="text">
+    </div>
+    <div style="margin-top:5px;">
+      Length of Stay:
+      <input type="number" id="presentStayYears" style="width:40px;"> Yr/s
+      <input type="number" id="presentStayMonths" style="width:40px; margin-left:10px;"> Mo/s
+    </div>
+  </td>
+</tr>
+
+<tr>
+  <td colspan="2" style="font-weight:bold; vertical-align:top;">
+    Provincial/Permanent Address <span style="font-size:12px; font-style:italic;">(No/Street/Subd/Barangay/Municipality/City)</span>
+    <div style="height:25px; background:#dfe3f5; margin-top:5px;">
+      <input class="input" id="provincialAddress" type="text">
+    </div>
+    <div style="margin-top:5px;">
+      Length of Stay:
+      <input type="number" id="provincialStayYears" style="width:40px;"> Yr/s
+      <input type="number" id="provincialStayMonths" style="width:40px; margin-left:10px;"> Mo/s
+    </div>
+  </td>
+  <td colspan="2" style="background:#dfe3f5;">
+    <textarea id="additionalNotes" style="width:100%; height:90px; border:none; resize:none;"></textarea>
+  </td>
+</tr>
+
+<tr>
+  <td colspan="4" style="font-weight:bold; font-size:16px;">EMPLOYMENT DETAILS OF BORROWER</td>
+</tr>
+
+<tr>
+  <td style="font-weight:bold;">Contact Numbers</td>
+  <td style="font-weight:bold;">Home</td>
+  <td style="font-weight:bold;">Mobile</td>
+  <td style="font-weight:bold;">Work</td>
+</tr>
+<tr style="background:#dfe3f5;">
+  <td></td>
+  <td><input class="input" id="homePhone" type="tel" maxlength="11" placeholder="09XXXXXXXXX"
+             oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,11)"></td>
+  <td><input class="input" id="mobilePhone" type="tel" maxlength="11" placeholder="09XXXXXXXXX"
+             oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,11)"></td>
+  <td><input class="input" id="workPhone" type="tel" maxlength="11" placeholder="09XXXXXXXXX"
+             oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,11)"></td>
+</tr>
+
+<tr>
+  <td style="font-weight:bold;">Email Address</td>
+  <td colspan="2" style="font-weight:bold;">Personal</td>
+  <td style="font-weight:bold;">Store</td>
+</tr>
+<tr style="background:#dfe3f5;">
+  <td></td>
+  <td colspan="2"><input class="input" id="personalEmail" type="email" placeholder="example@email.com"></td>
+  <td><input class="input" id="storeEmail" type="email" placeholder="store@email.com"></td>
+</tr>
+
+<tr>
+  <td style="font-weight:bold;">Company</td>
+  <td><input class="input" id="company" type="text"></td>
+  <td colspan="2" style="font-weight:bold;">Location (Department/Store)</td>
+</tr>
+<tr style="background:#dfe3f5;">
+  <td></td>
+  <td><input class="input" id="companyBranch" type="text"></td>
+  <td colspan="2"><input class="input" id="location" type="text"></td>
+</tr>
+
+<tr>
+  <td style="font-weight:bold;">Position</td>
+  <td style="font-weight:bold;">Employee / SAP Number</td>
+  <td style="font-weight:bold;">Date of Employment</td>
+  <td style="font-weight:bold;">SSS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TIN</td>
+</tr>
+<tr style="background:#dfe3f5; height:25px;">
+  <td><input class="input" id="position" type="text"></td>
+  <td><input class="input" id="employeeNumber" type="text"></td>
+  <td><input class="input" id="dateOfEmployment" type="date"></td>
+  <td><input class="input" id="sssTin" type="text"></td>
+</tr>
+
+</table>
+
+<!-- CO-BORROWERS -->
+<table style="margin-top:8px;">
+<tr class="blackbar">
+  <td colspan="2">PERSONAL DETAILS OF CO-BORROWER I</td>
+  <td colspan="2">PERSONAL DETAILS OF CO-BORROWER II</td>
+</tr>
+<tr>
+  <td colspan="2">Name (First / Middle / Last)</td>
+  <td colspan="2">Name (First / Middle / Last)</td>
+</tr>
+<tr class="gray">
+  <td colspan="2"><input class="input" id="coBorrower1Name"></td>
+  <td colspan="2"><input class="input" id="coBorrower2Name"></td>
+</tr>
+<tr>
+  <td colspan="2">Present Home Address</td>
+  <td colspan="2">Present Home Address</td>
+</tr>
+<tr class="gray">
+  <td colspan="2"><input class="input" id="coBorrower1Address"></td>
+  <td colspan="2"><input class="input" id="coBorrower2Address"></td>
+</tr>
+<tr>
+  <td colspan="2">Length of Stay: <input class="small" id="co1StayYrs"> Yr/s <input class="small" id="co1StayMos"> Mo/s</td>
+  <td colspan="2">Length of Stay: <input class="small" id="co2StayYrs"> Yr/s <input class="small" id="co2StayMos"> Mo/s</td>
+</tr>
+
+<tr class="bold">
+  <td colspan="2">EMPLOYMENT DETAILS OF CO-BORROWER I</td>
+  <td colspan="2">EMPLOYMENT DETAILS OF CO-BORROWER II</td>
+</tr>
+<tr>
+  <td>Contact No.</td><td>Home / Mobile / Work</td>
+  <td>Contact No.</td><td>Home / Mobile / Work</td>
+</tr>
+<tr class="gray">
+  <td><input class="input" id="co1ContactLabel"></td>
+  <td><input class="input" id="coBorrower1Contact"></td>
+  <td><input class="input" id="co2ContactLabel"></td>
+  <td><input class="input" id="coBorrower2Contact"></td>
+</tr>
+<tr>
+  <td>Company</td><td>Personal/Company Email Address</td>
+  <td>Company</td><td>Personal/Company Email Address</td>
+</tr>
+<tr class="gray">
+  <td><input class="input" id="coBorrower1Company"></td>
+  <td><input class="input" id="coBorrower1Email"></td>
+  <td><input class="input" id="coBorrower2Company"></td>
+  <td><input class="input" id="coBorrower2Email"></td>
+</tr>
+<tr>
+  <td>Location</td><td>Position</td>
+  <td>Location</td><td>Position</td>
+</tr>
+<tr class="gray">
+  <td><input class="input" id="coBorrower1Location"></td>
+  <td><input class="input" id="coBorrower1Position"></td>
+  <td><input class="input" id="coBorrower2Location"></td>
+  <td><input class="input" id="coBorrower2Position"></td>
+</tr>
+<tr>
+  <td>Date of Employment</td><td>Employee / SAP Number</td>
+  <td>Date of Employment</td><td>Employee / SAP Number</td>
+</tr>
+<tr class="gray">
+  <td><input class="input" id="coBorrower1DateEmployed"></td>
+  <td><input class="input" id="coBorrower1EmployeeNum"></td>
+  <td><input class="input" id="coBorrower2DateEmployed"></td>
+  <td><input class="input" id="coBorrower2EmployeeNum"></td>
+</tr>
+</table>
+
+<!-- IMMEDIATE SUPERIOR -->
+<table style="font-family:'Times New Roman',serif; font-size:14px; border:1px solid #000; margin-top:8px;">
+<tr>
+  <td colspan="5" style="background:#d9d9d9; font-weight:bold; padding:2px 6px;">IMMEDIATE SUPERIOR DETAILS</td>
+</tr>
+<tr style="background:yellow; font-weight:bold;">
+  <td colspan="2" style="padding:2px 6px;">Name</td>
+  <td style="padding:2px 6px;">First</td>
+  <td style="padding:2px 6px;">Middle</td>
+  <td style="padding:2px 6px;">Last</td>
+</tr>
+<tr>
+  <td colspan="2" id="superiorFullNameDisplay" style="padding:2px 6px; font-weight:bold;"></td>
+  <td style="padding:2px;">
+    <input type="text" id="superiorFirst" class="input" oninput="updateSuperiorFullName()">
+  </td>
+  <td style="padding:2px;">
+    <input type="text" id="superiorMiddle" class="input" oninput="updateSuperiorFullName()">
+  </td>
+  <td style="padding:2px;">
+    <input type="text" id="superiorLast" class="input" oninput="updateSuperiorFullName()">
+  </td>
+</tr>
+<tr style="background:yellow; font-weight:bold;">
+  <td style="padding:2px 6px;">Position</td>
+  <td style="padding:2px 6px;">No. of Years in Service</td>
+  <td style="padding:2px 6px;">Contact Numbers</td>
+  <td style="padding:2px 6px;">Landline</td>
+  <td style="padding:2px 6px;">Mobile</td>
+</tr>
+<tr>
+  <td style="padding:2px;"><input class="input" id="superiorPosition"></td>
+  <td style="padding:2px;"><input class="input" id="superiorYearsService"></td>
+  <td style="padding:2px;"><input class="input" id="superiorContactLabel"></td>
+  <td style="padding:2px;"><input class="input" id="superiorLandline"></td>
+  <td style="padding:2px;"><input class="input" id="superiorMobile"></td>
+</tr>
+</table>
+
+<!-- CERTIFICATION -->
+<table style="margin-top:8px;">
+<tr class="blackbar"><td class="center">CERTIFICATION</td></tr>
+<tr>
+<td>
+I hereby certify that __________________________ of __________________________ Company/Dept has no pending administrative/criminal case and no notice of resignation or leave without pay filed.
+<br><br><br>
+
+<div style="display:flex; justify-content:flex-end;">
+  <div style="display:flex; flex-direction:column; align-items:center; position:relative;">
+    <img id="hrPreviewImg" style="display:none; max-width:180px; margin-bottom:2px;
+         position:absolute; top:0; left:50%; transform:translateX(-50%); z-index:2; pointer-events:none;" />
+    <button type="button" id="hrUploadBtn" onclick="document.getElementById('hrFileInput').click();"
+        style="margin-bottom:3px; padding:6px 14px; font-size:12px; cursor:pointer;
+               border:1px solid #000; background:#f4b042; border-radius:4px; position:relative; z-index:1;">
+      Upload / Change Signature
+    </button>
+    <input type="file" id="hrFileInput" accept="image/*" style="display:none;">
+    <div style="width:350px; border-top:1px solid black; text-align:center; padding-top:5px; margin-top:90px;">
+      <b>Human Resource Representative's Signature Over Printed Name/Date</b>
+    </div>
+  </div>
+</div>
+</td>
+</tr>
+</table>
+
+<!-- DATA CONSENT -->
+<table style="margin-top:8px;">
+<tr><td style="border:none;">
+<div class="justify-text">
+<p>I hereby agree and consent that Jollibee Foods Corporation Employees' Multi-Purpose Cooperative (JFC COOP) may collect, use, disclose and process my personal and sensitive personal information as defined in the Data Privacy Act of 2012, for processing and administering and/or managing my availment of JFC COOP's products and services.</p>
+<p>I hereby acknowledge that my personal data may/will be disclosed by JFC COOP to its third party/parties, some of whom may be sited outside the Philippines, for one or more of the above purposes. These parties are:</p>
+<table class="list-table">
+<tr>
+  <td>(a.) Suppliers</td>
+  <td>(d.) Credit collection agencies</td>
+  <td>(g.) Jollibee Worldwide Services (JWS)</td>
+</tr>
+<tr>
+  <td>(b.) Accredited Web host/developers</td>
+  <td>(e.) Legal Counsel</td>
+  <td>(h.) National Confederation of Cooperatives</td>
+</tr>
+<tr>
+  <td>(c.) Loan Protection Insurance agencies</td>
+  <td>(f.) Strategic Business Unit (SBU)</td>
+  <td>(i.) Related Government Agencies</td>
+</tr>
+</table>
+<p>I hereby acknowledge and authorize: (1) the regular submission and disclosure of my basic credit data to the Credit Information Corporation (CIC); and (2) the sharing of my basic credit data with other lenders authorized by the CIC.</p>
+<p>I represent and warrant that I have read and understood all of the above provisions, including the Data Privacy Policies of JFC COOP.</p>
+<div class="section-title">AFFIDAVIT OF GOOD FAITH</div>
+<p>I/We declare under oath that all the foregoing information are true and correct to the best of my/our knowledge and that any misrepresentation thereof shall mean my automatic suspension and/or outright revocation of my membership from the COOP without prejudice to being subjected to disciplinary action.</p>
+</div>
+</td></tr>
+</table>
+
+<!-- SIGNATURES -->
+<table style="margin-top:8px;">
+<tr class="yellow">
+
+  <td class="sig-cell" style="height:120px;">
+    <div style="display:flex; flex-direction:column; height:100%;">
+      <label class="upload-area" style="flex:1;">
+        <img id="img1" class="sig-preview">
+        <input type="file" class="file-input" accept="image/png,image/jpeg" onchange="previewSign(event,'img1')">
+      </label>
+      <div style="margin-top:5px;">CO - Borrower Signature</div>
+    </div>
+  </td>
+
+  <td class="sig-cell" style="height:120px;">
+    <div style="display:flex; flex-direction:column; height:100%;">
+      <label class="upload-area" style="flex:1;">
+        <img id="img2" class="sig-preview">
+        <input type="file" class="file-input" accept="image/png,image/jpeg" onchange="previewSign(event,'img2')">
+      </label>
+      <div style="margin-top:5px;">CO - Borrower Signature</div>
+    </div>
+  </td>
+
+  <td class="sig-cell" style="height:120px;">
+    <div style="display:flex; flex-direction:column; height:100%;">
+      <label class="upload-area" style="flex:1;">
+        <img id="img3" class="sig-preview">
+        <input type="file" class="file-input" accept="image/png,image/jpeg" onchange="previewSign(event,'img3')">
+      </label>
+      <div style="margin-top:5px;">Borrower Signature</div>
+    </div>
+  </td>
+
+</tr>
+</table>
+
+<!-- LOAN PROCEEDS -->
+<table style="margin-top:8px;">
+<tr class="blackbar">
+  <td colspan="4">LOAN PROCEEDS (place check)</td>
+</tr>
+<tr>
+  <td><input type="checkbox" name="loanProceeds" value="Cheque"> Cheque</td>
+  <td><input type="checkbox" name="loanProceeds" value="Fund Transfer"> Fund Transfer</td>
+  <td>(Indicate Account Number)</td>
+  <td><input type="text" id="accountNumber" placeholder="Account Number"
+             style="width:100%; border:none; outline:none;"></td>
+</tr>
+<tr>
+<td colspan="4">
+I do hereby authorize Jollibee Foods Corporation Employees' Multi-Purpose Cooperative (JFC COOP) to transfer my Loan Proceeds to my Metrobank Payroll Account Number. In case the account number I have indicated above is not correct which will cause transferring of account to other person's account, I will not hold JFC COOP responsible for the erroneous information I have given.
+<br><br>
+<div style="text-align:right; width:350px; margin-left:auto;">
+  <div style="position:relative; width:320px; height:110px; margin-left:auto;">
+    <input type="file" id="signatureUpload" accept="image/*"
+           style="position:absolute; top:0; left:170px; width:140px; height:70px;
+                  opacity:0; cursor:pointer; z-index:5;">
+    <img id="signaturePreview" style="display:none; position:absolute; bottom:18px; left:170px;
+         max-width:140px; max-height:90px; object-fit:contain;">
+    <div style="position:absolute; bottom:0; right:0; width:100%; text-align:right;">
+      <div style="border-top:1px solid #000; width:220px; margin-left:auto; margin-bottom:3px;"></div>
+      <div>Borrower's Signature Over Printed Name</div>
+    </div>
+  </div>
+</div>
+</td>
+</tr>
+</table>
+
+<!-- OFFSET + COOP USE -->
+<table style="margin-top:8px;">
+<tr>
+  <td width="60%">
+    <b>LOAN OFFSET</b><br><br>
+    Loans for Offsetting: ___________________________<br>
+    Amount ___________________________<br><br>
+    ___________________________<br>
+    Amount ___________________________<br><br>
+    ___________________________<br>
+    Amount ___________________________<br><br>
+    <div class="right">Borrower Signature____________________</div>
+  </td>
+  <td width="40%">
+    <b>FOR JFC COOP USE ONLY</b><br><br>
+    Remarks: ___________________________<br><br>
+    Interviewed by: ___________________________<br><br>
+    Amount Approved: Php ___________________<br>
+    Term: ___________________<br><br>
+    Signature ___________________________
+  </td>
+</tr>
+</table>
+
+<!-- SUBMIT BUTTON -->
+<div style="margin:20px 0; text-align:center;">
+  <button type="button" onclick="submitForm()"
+      style="padding:12px 30px; background:#f4b042; border:none; font-size:16px;
+             font-weight:bold; cursor:pointer; border-radius:6px;">
+    SUBMIT FORM
+  </button>
+  <div id="submitStatus" style="margin-top:10px; font-size:14px; font-weight:bold;"></div>
+</div>
+
+</form>
+
+<!-- ===== ALL SCRIPTS ===== -->
+<script>
+
+/* --- Superior full name auto-display --- */
+function updateSuperiorFullName() {
+  const first  = document.getElementById('superiorFirst').value;
+  const middle = document.getElementById('superiorMiddle').value;
+  const last   = document.getElementById('superiorLast').value;
+  document.getElementById('superiorFullNameDisplay').textContent =
+    [first, middle, last].filter(Boolean).join(' ');
+}
+
+function previewSign(event, imgId) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => { document.getElementById(imgId).src = e.target.result; };
+  reader.readAsDataURL(file);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+
+  document.getElementById('hrFileInput').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = document.getElementById('hrPreviewImg');
+        img.src = e.target.result;
+        img.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  document.getElementById('signatureUpload').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = document.getElementById('signaturePreview');
+        img.src = e.target.result;
+        img.style.display = 'block';
+        document.getElementById('signatureUpload').style.display = 'none';
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+});
+
+function getChecked(name) {
+  return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`))
+              .map(cb => cb.value).join(', ');
+}
+
+function val(id) {
+  const el = document.getElementById(id);
+  return el ? el.value.trim() : '';
+}
+
+function submitForm() {
+  const statusEl = document.getElementById('submitStatus');
+  statusEl.textContent = '⏳ Submitting... please wait';
+  statusEl.style.color = '#555';
+
+  // ⚠️ PASTE YOUR NEW SCRIPT URL BELOW
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwubUYRMPYVcWRyZfdMD-T6L_P1VtfXKjKJ2NHhqi5-VRBD3YFdVD-ydJsnfx7qCupvfw/exec";
+
+  const formData = {
+    date:                    val('formDate'),
+    amountApplied:           val('amountApplied'),
+    loanTerm:                val('loanTerm'),
+    loanPurpose:             getChecked('loanPurpose') + (val('purposeOther') ? ' - ' + val('purposeOther') : ''),
+    howFound:                getChecked('howFound'),
+    firstName:               val('borrowerFirst'),
+    middleName:              val('borrowerMiddle'),
+    lastName:                val('borrowerLast'),
+    civilStatus:             getChecked('civilStatus'),
+    dateOfBirth:             val('dateOfBirth'),
+    dependentsMinor:         val('dependentsMinor'),
+    dependentsAdult:         val('dependentsAdult'),
+    residenceOwnership:      getChecked('residenceOwnership'),
+    presentAddress:          val('presentAddress'),
+    stayYears:               val('presentStayYears'),
+    stayMonths:              val('presentStayMonths'),
+    provincialAddress:       val('provincialAddress'),
+    homePhone:               val('homePhone'),
+    mobilePhone:             val('mobilePhone'),
+    workPhone:               val('workPhone'),
+    personalEmail:           val('personalEmail'),
+    storeEmail:              val('storeEmail'),
+    company:                 val('company'),
+    location:                val('location'),
+    position:                val('position'),
+    employeeNumber:          val('employeeNumber'),
+    dateOfEmployment:        val('dateOfEmployment'),
+    sssTin:                  val('sssTin'),
+    coBorrower1Name:         val('coBorrower1Name'),
+    coBorrower1Address:      val('coBorrower1Address'),
+    coBorrower1Contact:      val('coBorrower1Contact'),
+    coBorrower1Company:      val('coBorrower1Company'),
+    coBorrower1Email:        val('coBorrower1Email'),
+    coBorrower1Location:     val('coBorrower1Location'),
+    coBorrower1Position:     val('coBorrower1Position'),
+    coBorrower1DateEmployed: val('coBorrower1DateEmployed'),
+    coBorrower1EmployeeNum:  val('coBorrower1EmployeeNum'),
+    coBorrower2Name:         val('coBorrower2Name'),
+    coBorrower2Address:      val('coBorrower2Address'),
+    coBorrower2Contact:      val('coBorrower2Contact'),
+    coBorrower2Company:      val('coBorrower2Company'),
+    coBorrower2Email:        val('coBorrower2Email'),
+    coBorrower2Location:     val('coBorrower2Location'),
+    coBorrower2Position:     val('coBorrower2Position'),
+    coBorrower2DateEmployed: val('coBorrower2DateEmployed'),
+    coBorrower2EmployeeNum:  val('coBorrower2EmployeeNum'),
+    superiorFirstName:       val('superiorFirst'),
+    superiorMiddleName:      val('superiorMiddle'),
+    superiorLastName:        val('superiorLast'),
+    superiorPosition:        val('superiorPosition'),
+    superiorYearsService:    val('superiorYearsService'),
+    superiorLandline:        val('superiorLandline'),
+    superiorMobile:          val('superiorMobile'),
+    loanProceeds:            getChecked('loanProceeds'),
+    accountNumber:           val('accountNumber'),
+    timestamp:               new Date().toISOString()
+  };
+
+  console.log("Sending data:", formData); // check browser console
+
+  // Build URL with data as query parameter (most reliable method)
+  const params = new URLSearchParams();
+  params.append("data", JSON.stringify(formData));
+
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: params.toString()
+  })
+  .then(() => {
+    statusEl.textContent = "✅ Form Submitted Successfully!";
+    statusEl.style.color = "green";
+  })
+  .catch(error => {
+    console.error("Error:", error);
+    statusEl.textContent = "❌ Error: " + error.message;
+    statusEl.style.color = "red";
+  });
+}
+</body>
+</html>
