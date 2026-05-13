@@ -675,6 +675,17 @@ I do hereby authorize Jollibee Foods Corporation Employees' Multi-Purpose Cooper
 </form>
 
 <script>
+/* ── helpers ── */
+function val(id) {
+  var el = document.getElementById(id);
+  return el ? el.value.trim() : '';
+}
+
+function getRadio(name) {
+  var el = document.querySelector('input[name="' + name + '"]:checked');
+  return el ? el.value : '';
+}
+
 function updateSuperiorFullName() {
   var first  = document.getElementById('superiorFirst').value;
   var middle = document.getElementById('superiorMiddle').value;
@@ -683,11 +694,36 @@ function updateSuperiorFullName() {
     [first, middle, last].filter(Boolean).join(' ');
 }
 
+/* ── signature previews ── */
 function previewSign(event, imgId) {
   var file = event.target.files[0];
   if (!file) return;
   var reader = new FileReader();
   reader.onload = function(e) { document.getElementById(imgId).src = e.target.result; };
+  reader.readAsDataURL(file);
+}
+
+function previewBorrower(event) {
+  var file = event.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = document.getElementById('borrowerSigImg');
+    img.src = e.target.result;
+    img.style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+function previewSignature(event) {
+  var file = event.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = document.getElementById('signatureImg');
+    img.src = e.target.result;
+    img.style.display = 'block';
+  };
   reader.readAsDataURL(file);
 }
 
@@ -716,47 +752,14 @@ document.getElementById('signatureUpload').addEventListener('change', function(e
   reader.readAsDataURL(file);
 });
 
-function previewBorrower(event) {
-  var file = event.target.files[0];
-  if (!file) return;
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    var img = document.getElementById('borrowerSigImg');
-    img.src = e.target.result;
-    img.style.display = 'block';
-  };
-  reader.readAsDataURL(file);
-}
-
-function previewSignature(event) {
-  var file = event.target.files[0];
-  if (!file) return;
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    var img = document.getElementById('signatureImg');
-    img.src = e.target.result;
-    img.style.display = 'block';
-  };
-  reader.readAsDataURL(file);
-}
-
-function getChecked(name) {
-  return Array.from(document.querySelectorAll('input[name="' + name + '"]:checked'))
-              .map(function(cb) { return cb.value; }).join(', ');
-}
-
-function val(id) {
-  var el = document.getElementById(id);
-  return el ? el.value.trim() : '';
-}
-
+/* ── validation ── */
 function showErr(id, show) {
-  var el = document.getElementById(id + '-err');
-  var field = document.getElementById(id);
-  if (el) el.style.display = show ? 'block' : 'none';
+  var errEl  = document.getElementById(id + '-err');
+  var field  = document.getElementById(id);
+  if (errEl)  errEl.style.display = show ? 'block' : 'none';
   if (field) {
     if (show) field.classList.add('field-error');
-    else field.classList.remove('field-error');
+    else      field.classList.remove('field-error');
   }
 }
 
@@ -764,48 +767,53 @@ function validateForm() {
   var errors = [];
 
   function checkField(id, label) {
-    var v = val(id);
-    if (!v) { errors.push(label); showErr(id, true); }
-    else { showErr(id, false); }
+    if (!val(id)) { errors.push(label); showErr(id, true); }
+    else           { showErr(id, false); }
   }
 
-  function checkGroup(name, errId, label) {
-    var checked = document.querySelectorAll('input[name="' + name + '"]:checked').length > 0;
+  function checkRadio(name, errId, label) {
+    var checked = !!document.querySelector('input[name="' + name + '"]:checked');
     var el = document.getElementById(errId + '-err');
     if (!checked) { errors.push(label); if (el) el.style.display = 'block'; }
-    else { if (el) el.style.display = 'none'; }
-    return checked;
+    else           { if (el) el.style.display = 'none'; }
   }
 
+  /* Date */
   checkField('formDate', 'Date');
+
+  /* Loan Details */
   checkField('amountApplied', 'Amount Applied');
   checkField('loanTerm', 'Loan Term');
-  checkGroup('loanPurpose', 'loanPurpose', 'Loan Purpose');
-  checkGroup('howFound', 'howFound', 'How did you find out about this product?');
+  checkRadio('loanPurpose',        'loanPurpose',        'Loan Purpose');
+  checkRadio('howFound',           'howFound',           'How did you find out about this product?');
+
+  /* Borrower Personal */
   checkField('borrowerFirst', 'Borrower First Name');
-  checkField('borrowerLast', 'Borrower Last Name');
-  checkGroup('civilStatus', 'civilStatus', 'Civil Status');
+  checkField('borrowerLast',  'Borrower Last Name');
+  checkRadio('civilStatus',        'civilStatus',        'Civil Status');
   checkField('dateOfBirth', 'Date of Birth');
-  checkGroup('residenceOwnership', 'residenceOwnership', 'Residence Ownership');
+  checkRadio('residenceOwnership', 'residenceOwnership', 'Residence Ownership');
   checkField('presentAddress', 'Present Residence Address');
-  checkField('mobilePhone', 'Mobile Phone Number');
-  checkField('personalEmail', 'Personal Email Address');
-  checkField('company', 'Company Name');
-  checkField('location', 'Location (Department/Store)');
-  checkField('position', 'Position');
+
+  /* Borrower Employment */
+  checkField('mobilePhone',    'Mobile Phone Number');
+  checkField('personalEmail',  'Personal Email Address');
+  checkField('company',        'Company Name');
+  checkField('location',       'Location (Department/Store)');
+  checkField('position',       'Position');
   checkField('employeeNumber', 'Employee / SAP Number');
-  checkField('dateOfEmployment', 'Date of Employment');
-  checkField('superiorFirst', "Immediate Superior's First Name");
-  checkField('superiorLast', "Immediate Superior's Last Name");
+  checkField('dateOfEmployment','Date of Employment');
+
+  /* Immediate Superior */
+  checkField('superiorFirst',    "Immediate Superior's First Name");
+  checkField('superiorLast',     "Immediate Superior's Last Name");
   checkField('superiorPosition', "Immediate Superior's Position");
-  checkField('superiorMobile', "Immediate Superior's Mobile Number");
+  checkField('superiorMobile',   "Immediate Superior's Mobile Number");
 
-  // FIX: Removed broken borrowerSigInput / borrowerSigArea references
-  // Signature upload is optional — no validation crash
-
-  var proceedsChecked = document.querySelectorAll('input[name="loanProceeds"]:checked').length > 0;
-  var accountNum = val('accountNumber');
-  var proceedsErr = document.getElementById('loanProceeds-err');
+  /* Loan Proceeds */
+  var proceedsChecked = !!document.querySelector('input[name="loanProceeds"]:checked');
+  var accountNum      = val('accountNumber');
+  var proceedsErr     = document.getElementById('loanProceeds-err');
   if (!proceedsChecked || !accountNum) {
     errors.push('Loan Proceeds method and Account Number');
     if (proceedsErr) proceedsErr.style.display = 'block';
@@ -826,9 +834,9 @@ function closeSuccessModal() {
   document.getElementById('successModal').classList.remove('show');
 }
 
+/* ── submit ── */
 function submitForm() {
   var errors = validateForm();
-
   if (errors.length > 0) {
     var list = document.getElementById('validationModalList');
     list.innerHTML = '';
@@ -842,117 +850,120 @@ function submitForm() {
   }
 
   var statusEl = document.getElementById('submitStatus');
-  statusEl.textContent = 'Submitting... please wait';
+  statusEl.textContent = 'Submitting… please wait';
   statusEl.style.color = '#555';
 
   var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx-UGQRrkBdsX9m-aFki_VKritucq1GX_dS70neb6a-a8aUWyx1i3xC0oeVdb3VgkWPsw/exec";
 
-  // =====================================================================
-  // FIXED formData — all fields in correct order.
-  // Co-Borrower 1 & 2 fully included BEFORE Immediate Superior.
-  // This matches the expected Google Sheet column sequence.
-  // =====================================================================
+  /* =================================================================
+     formData — fields in the EXACT same order as your Google Sheet
+     columns (left to right). Co-Borrower I & II are fully listed
+     BEFORE Immediate Superior so data never lands in the wrong column.
+     ================================================================= */
   var formData = {
-    // BASIC
-    timestamp:               new Date().toLocaleString(),
-    date:                    val('formDate'),
+    /* ── meta ── */
+    timestamp:                new Date().toLocaleString(),
+    date:                     val('formDate'),
 
-    // LOAN DETAILS
-    amountApplied:           val('amountApplied'),
-    loanTerm:                val('loanTerm'),
-    loanPurpose:             getChecked('loanPurpose'),
-    purposeOther:            val('purposeOther'),
-    howFound:                getChecked('howFound'),
-    memberOtherFI:           getChecked('memberOtherFI'),
-    fiType:                  getChecked('fiType'),
-    creditCardBank:          val('creditCardBank'),
-    onlineLendingApp:        val('onlineLendingApp'),
+    /* ── loan details ── */
+    amountApplied:            val('amountApplied'),
+    loanTerm:                 val('loanTerm'),
+    loanPurpose:              getRadio('loanPurpose'),
+    purposeOther:             val('purposeOther'),
+    howFound:                 getRadio('howFound'),
+    memberOtherFI:            getRadio('memberOtherFI'),
+    fiType:                   getRadio('fiType'),
+    creditCardBank:           val('creditCardBank'),
+    onlineLendingApp:         val('onlineLendingApp'),
 
-    // BORROWER PERSONAL
-    firstName:               val('borrowerFirst'),
-    middleName:              val('borrowerMiddle'),
-    lastName:                val('borrowerLast'),
-    civilStatus:             getChecked('civilStatus'),
-    dateOfBirth:             val('dateOfBirth'),
-    dependentsMinor:         val('dependentsMinor'),
-    dependentsAdult:         val('dependentsAdult'),
-    residenceOwnership:      getChecked('residenceOwnership'),
-    rentAmount:              val('rentAmount'),
-    presentAddress:          val('presentAddress'),
-    presentStayYears:        val('presentStayYears'),
-    presentStayMonths:       val('presentStayMonths'),
-    provincialAddress:       val('provincialAddress'),
-    provincialStayYears:     val('provincialStayYears'),
-    provincialStayMonths:    val('provincialStayMonths'),
-    additionalNotes:         val('additionalNotes'),
+    /* ── borrower personal ── */
+    firstName:                val('borrowerFirst'),
+    middleName:               val('borrowerMiddle'),
+    lastName:                 val('borrowerLast'),
+    civilStatus:              getRadio('civilStatus'),
+    dateOfBirth:              val('dateOfBirth'),
+    dependentsMinor:          val('dependentsMinor'),
+    dependentsAdult:          val('dependentsAdult'),
+    residenceOwnership:       getRadio('residenceOwnership'),
+    rentAmount:               val('rentAmount'),
+    presentAddress:           val('presentAddress'),
+    presentStayYears:         val('presentStayYears'),
+    presentStayMonths:        val('presentStayMonths'),
+    provincialAddress:        val('provincialAddress'),
+    provincialStayYears:      val('provincialStayYears'),
+    provincialStayMonths:     val('provincialStayMonths'),
+    additionalNotes:          val('additionalNotes'),
 
-    // BORROWER EMPLOYMENT
-    homePhone:               val('homePhone'),
-    mobilePhone:             val('mobilePhone'),
-    workPhone:               val('workPhone'),
-    personalEmail:           val('personalEmail'),
-    storeEmail:              val('storeEmail'),
-    company:                 val('company'),
-    companyBranch:           val('companyBranch'),
-    location:                val('location'),
-    position:                val('position'),
-    employeeNumber:          val('employeeNumber'),
-    dateOfEmployment:        val('dateOfEmployment'),
-    sssTin:                  val('sssTin'),
+    /* ── borrower employment ── */
+    homePhone:                val('homePhone'),
+    mobilePhone:              val('mobilePhone'),
+    workPhone:                val('workPhone'),
+    personalEmail:            val('personalEmail'),
+    storeEmail:               val('storeEmail'),
+    company:                  val('company'),
+    companyBranch:            val('companyBranch'),
+    location:                 val('location'),
+    position:                 val('position'),
+    employeeNumber:           val('employeeNumber'),
+    dateOfEmployment:         val('dateOfEmployment'),
+    sssTin:                   val('sssTin'),
 
-    // CO-BORROWER 1
-    coBorrower1Name:         val('coBorrower1Name'),
-    coBorrower1Address:      val('coBorrower1Address'),
-    co1StayYears:            val('co1StayYrs'),
-    co1StayMonths:           val('co1StayMos'),
-    coBorrower1Contact:      val('coBorrower1Contact'),
-    coBorrower1Company:      val('coBorrower1Company'),
-    coBorrower1Email:        val('coBorrower1Email'),
-    coBorrower1Location:     val('coBorrower1Location'),
-    coBorrower1Position:     val('coBorrower1Position'),
-    coBorrower1DateEmployed: val('coBorrower1DateEmployed'),
-    coBorrower1EmployeeNum:  val('coBorrower1EmployeeNum'),
+    /* ── co-borrower 1 ── */
+    coBorrower1Name:          val('coBorrower1Name'),
+    coBorrower1Address:       val('coBorrower1Address'),
+    co1StayYears:             val('co1StayYrs'),
+    co1StayMonths:            val('co1StayMos'),
+    coBorrower1ContactLabel:  val('co1ContactLabel'),
+    coBorrower1Contact:       val('coBorrower1Contact'),
+    coBorrower1Company:       val('coBorrower1Company'),
+    coBorrower1Email:         val('coBorrower1Email'),
+    coBorrower1Location:      val('coBorrower1Location'),
+    coBorrower1Position:      val('coBorrower1Position'),
+    coBorrower1DateEmployed:  val('coBorrower1DateEmployed'),
+    coBorrower1EmployeeNum:   val('coBorrower1EmployeeNum'),
 
-    // CO-BORROWER 2
-    coBorrower2Name:         val('coBorrower2Name'),
-    coBorrower2Address:      val('coBorrower2Address'),
-    co2StayYears:            val('co2StayYrs'),
-    co2StayMonths:           val('co2StayMos'),
-    coBorrower2Contact:      val('coBorrower2Contact'),
-    coBorrower2Company:      val('coBorrower2Company'),
-    coBorrower2Email:        val('coBorrower2Email'),
-    coBorrower2Location:     val('coBorrower2Location'),
-    coBorrower2Position:     val('coBorrower2Position'),
-    coBorrower2DateEmployed: val('coBorrower2DateEmployed'),
-    coBorrower2EmployeeNum:  val('coBorrower2EmployeeNum'),
+    /* ── co-borrower 2 ── */
+    coBorrower2Name:          val('coBorrower2Name'),
+    coBorrower2Address:       val('coBorrower2Address'),
+    co2StayYears:             val('co2StayYrs'),
+    co2StayMonths:            val('co2StayMos'),
+    coBorrower2ContactLabel:  val('co2ContactLabel'),
+    coBorrower2Contact:       val('coBorrower2Contact'),
+    coBorrower2Company:       val('coBorrower2Company'),
+    coBorrower2Email:         val('coBorrower2Email'),
+    coBorrower2Location:      val('coBorrower2Location'),
+    coBorrower2Position:      val('coBorrower2Position'),
+    coBorrower2DateEmployed:  val('coBorrower2DateEmployed'),
+    coBorrower2EmployeeNum:   val('coBorrower2EmployeeNum'),
 
-    // IMMEDIATE SUPERIOR (after co-borrowers — fixes the column shift bug)
-    superiorFirstName:       val('superiorFirst'),
-    superiorMiddleName:      val('superiorMiddle'),
-    superiorLastName:        val('superiorLast'),
-    superiorPosition:        val('superiorPosition'),
-    superiorYearsService:    val('superiorYearsService'),
-    superiorLandline:        val('superiorLandline'),
-    superiorMobile:          val('superiorMobile'),
+    /* ── immediate superior (AFTER co-borrowers — fixes column shift) ── */
+    superiorFirstName:        val('superiorFirst'),
+    superiorMiddleName:       val('superiorMiddle'),
+    superiorLastName:         val('superiorLast'),
+    superiorPosition:         val('superiorPosition'),
+    superiorYearsService:     val('superiorYearsService'),
+    superiorLandline:         val('superiorLandline'),
+    superiorMobile:           val('superiorMobile'),
 
-    // LOAN PROCEEDS
-    loanProceeds:            getChecked('loanProceeds'),
-    accountNumber:           val('accountNumber')
+    /* ── loan proceeds ── */
+    loanProceeds:             getRadio('loanProceeds'),
+    accountNumber:            val('accountNumber')
   };
 
   var url = SCRIPT_URL + "?data=" + encodeURIComponent(JSON.stringify(formData));
 
   fetch(url, { method: "GET", mode: "no-cors" })
-  .then(function() {
-    statusEl.textContent = "";
-    document.getElementById('successModal').classList.add('show');
-  })
-  .catch(function(error) {
-    statusEl.textContent = "❌ Error: " + error.message;
-    statusEl.style.color = "red";
-  });
+    .then(function() {
+      statusEl.textContent = "";
+      document.getElementById('successModal').classList.add('show');
+    })
+    .catch(function(error) {
+      statusEl.textContent = "❌ Error: " + error.message;
+      statusEl.style.color = "red";
+    });
 }
 
+/* ── generate PDF ── */
 function generatePDF() {
   var errors = validateForm();
   if (errors.length > 0) {
@@ -966,13 +977,13 @@ function generatePDF() {
     document.getElementById('validationModal').classList.add('show');
     return;
   }
-  var bar = document.getElementById('formActionBar');
+  var bar    = document.getElementById('formActionBar');
   var status = document.getElementById('submitStatus');
-  bar.style.display = 'none';
+  bar.style.display    = 'none';
   status.style.display = 'none';
   window.print();
   setTimeout(function() {
-    bar.style.display = 'flex';
+    bar.style.display    = 'flex';
     status.style.display = 'block';
   }, 500);
 }
