@@ -6,7 +6,6 @@
 <style>
 body { font-family: "Times New Roman", serif; background: #dcdcdc; }
 
-/* ===== PRINT / PDF STYLES ===== */
 @media print {
   body { background: white !important; }
   .no-print { display: none !important; }
@@ -33,6 +32,7 @@ body { font-family: "Times New Roman", serif; background: #dcdcdc; }
   }
   #validationModal, #successModal { display: none !important; }
 }
+
 table { width: 100%; border-collapse: collapse; }
 td { border: 1px solid black; padding: 6px; font-size: 14px; }
 .gray { background: #d9d9d9; }
@@ -64,122 +64,58 @@ input[type="checkbox"]:checked::after {
   content: "✓"; font-size: 12px; position: absolute; top: -2px; left: 1px;
 }
 
-.field-error {
-  border-bottom: 2px solid red !important;
-  background-color: #fff0f0 !important;
-}
-.field-error-checkbox {
-  outline: 2px solid red;
-  border-radius: 3px;
-}
-.error-label {
-  color: red;
-  font-size: 11px;
-  font-weight: bold;
-  display: block;
-  margin-top: 2px;
-}
-.required-mark {
-  color: red;
-  font-weight: bold;
-}
+.field-error { border-bottom: 2px solid red !important; background-color: #fff0f0 !important; }
+.field-error-checkbox { outline: 2px solid red; border-radius: 3px; }
+.error-label { color: red; font-size: 11px; font-weight: bold; display: block; margin-top: 2px; }
+.required-mark { color: red; font-weight: bold; }
 
 #validationModal {
-  display: none;
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.55);
-  z-index: 9999;
-  justify-content: center;
-  align-items: center;
+  display: none; position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%; background: rgba(0,0,0,0.55);
+  z-index: 9999; justify-content: center; align-items: center;
 }
 #validationModal.show { display: flex; }
 #validationModalBox {
-  background: #fff;
-  border-radius: 12px;
-  padding: 30px 35px;
-  max-width: 480px;
-  width: 90%;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  background: #fff; border-radius: 12px; padding: 30px 35px;
+  max-width: 480px; width: 90%; box-shadow: 0 8px 32px rgba(0,0,0,0.25);
   font-family: Arial, sans-serif;
 }
-#validationModalBox h2 {
-  margin: 0 0 10px;
-  color: #c0392b;
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+#validationModalBox h2 { margin: 0 0 10px; color: #c0392b; font-size: 20px; display: flex; align-items: center; gap: 8px; }
 #validationModalBox p { margin: 0 0 15px; color: #555; font-size: 14px; }
 #validationModalList {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 20px;
-  max-height: 260px;
-  overflow-y: auto;
-  border: 1px solid #f0d0d0;
-  border-radius: 6px;
-  background: #fff8f8;
+  list-style: none; padding: 0; margin: 0 0 20px;
+  max-height: 260px; overflow-y: auto;
+  border: 1px solid #f0d0d0; border-radius: 6px; background: #fff8f8;
 }
 #validationModalList li {
-  padding: 7px 12px;
-  font-size: 13px;
-  color: #444;
-  border-bottom: 1px solid #f5d5d5;
-  display: flex;
-  align-items: flex-start;
-  gap: 6px;
+  padding: 7px 12px; font-size: 13px; color: #444;
+  border-bottom: 1px solid #f5d5d5; display: flex; align-items: flex-start; gap: 6px;
 }
 #validationModalList li:last-child { border-bottom: none; }
 #validationModalList li::before { content: "⚠"; color: #e74c3c; flex-shrink: 0; margin-top: 1px; }
 #modalCloseBtn {
-  width: 100%;
-  padding: 10px;
-  background: #f4b042;
-  border: none;
-  border-radius: 6px;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
-  color: #000;
+  width: 100%; padding: 10px; background: #f4b042; border: none;
+  border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer; color: #000;
 }
 #modalCloseBtn:hover { background: #e0992d; }
 
 #successModal {
-  display: none;
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.55);
-  z-index: 9999;
-  justify-content: center;
-  align-items: center;
+  display: none; position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%; background: rgba(0,0,0,0.55);
+  z-index: 9999; justify-content: center; align-items: center;
 }
 #successModal.show { display: flex; }
 #successModalBox {
-  background: #fff;
-  border-radius: 12px;
-  padding: 35px;
-  max-width: 400px;
-  width: 90%;
-  text-align: center;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-  font-family: Arial, sans-serif;
+  background: #fff; border-radius: 12px; padding: 35px;
+  max-width: 400px; width: 90%; text-align: center;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25); font-family: Arial, sans-serif;
 }
 #successModalBox .check-icon { font-size: 56px; margin-bottom: 12px; }
 #successModalBox h2 { color: #27ae60; margin: 0 0 8px; }
 #successModalBox p { color: #555; font-size: 14px; margin: 0 0 20px; }
 #successCloseBtn {
-  padding: 10px 28px;
-  background: #27ae60;
-  border: none;
-  border-radius: 6px;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
-  color: #fff;
+  padding: 10px 28px; background: #27ae60; border: none;
+  border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer; color: #fff;
 }
 
 .sig-cell { text-align: center; vertical-align: middle; padding: 10px; }
@@ -229,7 +165,6 @@ input[type="checkbox"]:checked::after {
 <!-- TITLE + INSTRUCTIONS -->
 <table style="font-family:Arial,sans-serif; border-collapse:collapse; margin-bottom:12px;">
 <tr>
-
 <td width="60%" valign="middle" style="padding-right:15px; border:none;">
   <div style="background:linear-gradient(135deg,#000,#222); border-radius:12px; padding:35px 25px;
               text-align:center; box-shadow:0 4px 10px rgba(0,0,0,.15); min-height:180px;
@@ -238,7 +173,6 @@ input[type="checkbox"]:checked::after {
     <div style="color:#fff; font-size:34px; font-weight:700; letter-spacing:3px; margin-top:8px;">LOAN FORM</div>
   </div>
 </td>
-
 <td width="40%" valign="top" style="border:none;">
   <div style="border:1px solid #dcdcdc; background:#f9f9f9; border-radius:12px; padding:20px;
               font-size:13px; color:#333; line-height:1.7; box-shadow:0 2px 8px rgba(0,0,0,.08); box-sizing:border-box;">
@@ -252,10 +186,7 @@ input[type="checkbox"]:checked::after {
       <li style="margin-bottom:15px;">
         Attach scanned copies of the following:
         <ul style="margin-top:8px; padding-left:18px;">
-          <li>
-            <a href="UPLOAD_LINK_HERE" target="_blank">Upload Company ID or any government-issued ID</a>
-            and 1-month latest pay slips (15th and 30th)
-          </li>
+          <li><a href="UPLOAD_LINK_HERE" target="_blank">Upload Company ID or any government-issued ID</a> and 1-month latest pay slips (15th and 30th)</li>
         </ul>
       </li>
     </ol>
@@ -269,7 +200,6 @@ input[type="checkbox"]:checked::after {
     </div>
   </div>
 </td>
-
 </tr>
 </table>
 
@@ -282,28 +212,21 @@ input[type="checkbox"]:checked::after {
 
 <!-- LOAN DETAILS -->
 <div class="main-grid" style="margin-bottom:10px;">
-
-  <!-- LEFT -->
   <div>
     <b style="font-size:16px;">LOAN DETAILS</b>
     <div class="row">
-
       <div class="box" style="width:60%;">
         <div class="yellow">Amount Applied <span class="required-mark">*</span></div>
         Php <input class="input" id="amountApplied" type="number" placeholder="0.00">
         <span id="amountApplied-err" class="error-label" style="display:none;">Amount is required.</span>
       </div>
-
       <div class="box" style="width:40%;">
         <div class="yellow">Term <span class="required-mark">*</span></div>
         <input class="input" id="loanTerm" type="text" placeholder="e.g. 12 months">
         <span id="loanTerm-err" class="error-label" style="display:none;">Loan term is required.</span>
       </div>
-
     </div>
-
     <div class="row">
-
       <div class="box" style="width:60%;">
         <div class="yellow">Purpose of Loan (Please check [✓]) <span class="required-mark">*</span></div>
         <div class="checkbox-group" id="loanPurposeGroup">
@@ -319,7 +242,6 @@ input[type="checkbox"]:checked::after {
         </div>
         <span id="loanPurpose-err" class="error-label" style="display:none;">Please select at least one loan purpose.</span>
       </div>
-
       <div class="box" style="width:40%;">
         <div class="yellow">How did you find out about this product? <span class="required-mark">*</span></div>
         <div style="font-size:13px;"><b>Through:</b><br>Please check [✓]</div>
@@ -332,11 +254,9 @@ input[type="checkbox"]:checked::after {
         </div>
         <span id="howFound-err" class="error-label" style="display:none;">Please select how you found out.</span>
       </div>
-
     </div>
   </div>
 
-  <!-- RIGHT -->
   <div class="box">
     <div class="yellow">
       Member of other Financing Institutions?
@@ -357,12 +277,10 @@ input[type="checkbox"]:checked::after {
       </div>
     </div>
   </div>
-
 </div>
 
 <!-- BORROWER DETAILS -->
 <table style="font-family:'Times New Roman',serif; font-size:14px;">
-
 <tr>
   <td style="font-weight:bold; width:16%;">Name <span class="required-mark">*</span></td>
   <td style="font-weight:bold; width:30%;">First</td>
@@ -375,7 +293,6 @@ input[type="checkbox"]:checked::after {
   <td><input class="input" id="borrowerMiddle" type="text"></td>
   <td><input class="input" id="borrowerLast" type="text"><span id="borrowerLast-err" class="error-label" style="display:none;">Last name is required.</span></td>
 </tr>
-
 <tr>
   <td colspan="2" style="font-weight:bold; padding:8px;">
     Civil Status <span class="required-mark">*</span>
@@ -395,7 +312,6 @@ input[type="checkbox"]:checked::after {
     <input type="text" id="dependentsAdult" style="width:40px; margin-left:10px;"> Adult/s
   </td>
 </tr>
-
 <tr>
   <td colspan="4" style="padding:8px;">
     <b>Residence Ownership <span class="required-mark">*</span></b>
@@ -409,7 +325,6 @@ input[type="checkbox"]:checked::after {
     <br><span id="residenceOwnership-err" class="error-label" style="display:none;">Please select residence ownership.</span>
   </td>
 </tr>
-
 <tr>
   <td colspan="4" style="font-weight:bold;">
     Present Residence Address <span class="required-mark">*</span> <span style="font-size:12px; font-style:italic;">(No/Street/Subd/Barangay/Municipality/City)</span>
@@ -421,7 +336,6 @@ input[type="checkbox"]:checked::after {
     </div>
   </td>
 </tr>
-
 <tr>
   <td colspan="2" style="font-weight:bold; vertical-align:top;">
     Provincial/Permanent Address <span style="font-size:12px; font-style:italic;">(No/Street/Subd/Barangay/Municipality/City)</span>
@@ -435,9 +349,7 @@ input[type="checkbox"]:checked::after {
     <textarea id="additionalNotes" style="width:100%; height:90px; border:none; resize:none;"></textarea>
   </td>
 </tr>
-
 <tr><td colspan="4" style="font-weight:bold; font-size:16px;">EMPLOYMENT DETAILS OF BORROWER</td></tr>
-
 <tr>
   <td style="font-weight:bold;">Contact Numbers</td>
   <td style="font-weight:bold;">Home</td>
@@ -450,7 +362,6 @@ input[type="checkbox"]:checked::after {
   <td><input class="input" id="mobilePhone" type="tel" maxlength="11" placeholder="09XXXXXXXXX" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,11)"><span id="mobilePhone-err" class="error-label" style="display:none;">Mobile number is required.</span></td>
   <td><input class="input" id="workPhone" type="tel" maxlength="11" placeholder="09XXXXXXXXX" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,11)"></td>
 </tr>
-
 <tr>
   <td style="font-weight:bold;">Email Address</td>
   <td colspan="2" style="font-weight:bold;">Personal <span class="required-mark">*</span></td>
@@ -461,7 +372,6 @@ input[type="checkbox"]:checked::after {
   <td colspan="2"><input class="input" id="personalEmail" type="email" placeholder="example@email.com"><span id="personalEmail-err" class="error-label" style="display:none;">Personal email is required.</span></td>
   <td><input class="input" id="storeEmail" type="email" placeholder="store@email.com"></td>
 </tr>
-
 <tr>
   <td style="font-weight:bold;">Company <span class="required-mark">*</span></td>
   <td><input class="input" id="company" type="text"><span id="company-err" class="error-label" style="display:none;">Company is required.</span></td>
@@ -472,7 +382,6 @@ input[type="checkbox"]:checked::after {
   <td><input class="input" id="companyBranch" type="text"></td>
   <td colspan="2"><input class="input" id="location" type="text"><span id="location-err" class="error-label" style="display:none;">Location is required.</span></td>
 </tr>
-
 <tr>
   <td style="font-weight:bold;">Position <span class="required-mark">*</span></td>
   <td style="font-weight:bold;">Employee / SAP Number <span class="required-mark">*</span></td>
@@ -485,7 +394,6 @@ input[type="checkbox"]:checked::after {
   <td><input class="input" id="dateOfEmployment" type="date"><span id="dateOfEmployment-err" class="error-label" style="display:none;">Date of employment is required.</span></td>
   <td><input class="input" id="sssTin" type="text"></td>
 </tr>
-
 </table>
 
 <!-- CO-BORROWERS -->
@@ -754,11 +662,11 @@ I do hereby authorize Jollibee Foods Corporation Employees' Multi-Purpose Cooper
 <!-- ACTION BUTTONS -->
 <div id="formActionBar" class="no-print" style="margin:24px 0; text-align:center; display:flex; justify-content:center; align-items:center; gap:20px; flex-wrap:wrap;">
   <button type="button" onclick="submitForm()" id="submitBtn"
-      style="padding:13px 34px; background:#f4b042; border:none; font-size:16px; font-weight:bold; cursor:pointer; border-radius:8px; display:inline-flex; align-items:center; gap:8px; box-shadow:0 2px 8px rgba(0,0,0,0.15);">
+      style="padding:13px 34px; background:#f4b042; border:none; font-size:16px; font-weight:bold; cursor:pointer; border-radius:8px; display:inline-flex; align-items:center; gap:8px; box-shadow:0 2px 8px rgba(0,0,0,0.15); transition: opacity 0.2s;">
     &#128228; SUBMIT FORM
   </button>
   <button type="button" onclick="generatePDF()" id="generatePdfBtn"
-      style="padding:13px 34px; background:#1a5276; color:#fff; border:none; font-size:16px; font-weight:bold; cursor:pointer; border-radius:8px; display:inline-flex; align-items:center; gap:8px; box-shadow:0 2px 8px rgba(0,0,0,0.2);">
+      style="padding:13px 34px; background:#1a5276; color:#fff; border:none; font-size:16px; font-weight:bold; cursor:pointer; border-radius:8px; display:inline-flex; align-items:center; gap:8px; box-shadow:0 2px 8px rgba(0,0,0,0.2); transition: opacity 0.2s;">
     &#128438; GENERATE PDF
   </button>
 </div>
@@ -892,6 +800,9 @@ function validateForm() {
   checkField('superiorPosition', "Immediate Superior's Position");
   checkField('superiorMobile', "Immediate Superior's Mobile Number");
 
+  // FIX: Removed broken borrowerSigInput / borrowerSigArea references
+  // Signature upload is optional — no validation crash
+
   var proceedsChecked = document.querySelectorAll('input[name="loanProceeds"]:checked').length > 0;
   var accountNum = val('accountNumber');
   var proceedsErr = document.getElementById('loanProceeds-err');
@@ -937,16 +848,16 @@ function submitForm() {
   var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx-UGQRrkBdsX9m-aFki_VKritucq1GX_dS70neb6a-a8aUWyx1i3xC0oeVdb3VgkWPsw/exec";
 
   // =====================================================================
-  // FIX: All fields are now explicitly grouped and clearly separated.
-  // Co-Borrower fields are fully included BEFORE Superior fields.
-  // This matches the expected Google Sheet column order.
+  // FIXED formData — all fields in correct order.
+  // Co-Borrower 1 & 2 fully included BEFORE Immediate Superior.
+  // This matches the expected Google Sheet column sequence.
   // =====================================================================
   var formData = {
-    // --- BASIC ---
+    // BASIC
     timestamp:               new Date().toLocaleString(),
     date:                    val('formDate'),
 
-    // --- LOAN DETAILS ---
+    // LOAN DETAILS
     amountApplied:           val('amountApplied'),
     loanTerm:                val('loanTerm'),
     loanPurpose:             getChecked('loanPurpose'),
@@ -957,7 +868,7 @@ function submitForm() {
     creditCardBank:          val('creditCardBank'),
     onlineLendingApp:        val('onlineLendingApp'),
 
-    // --- BORROWER PERSONAL ---
+    // BORROWER PERSONAL
     firstName:               val('borrowerFirst'),
     middleName:              val('borrowerMiddle'),
     lastName:                val('borrowerLast'),
@@ -975,7 +886,7 @@ function submitForm() {
     provincialStayMonths:    val('provincialStayMonths'),
     additionalNotes:         val('additionalNotes'),
 
-    // --- BORROWER EMPLOYMENT ---
+    // BORROWER EMPLOYMENT
     homePhone:               val('homePhone'),
     mobilePhone:             val('mobilePhone'),
     workPhone:               val('workPhone'),
@@ -989,7 +900,7 @@ function submitForm() {
     dateOfEmployment:        val('dateOfEmployment'),
     sssTin:                  val('sssTin'),
 
-    // --- CO-BORROWER 1 ---
+    // CO-BORROWER 1
     coBorrower1Name:         val('coBorrower1Name'),
     coBorrower1Address:      val('coBorrower1Address'),
     co1StayYears:            val('co1StayYrs'),
@@ -1002,7 +913,7 @@ function submitForm() {
     coBorrower1DateEmployed: val('coBorrower1DateEmployed'),
     coBorrower1EmployeeNum:  val('coBorrower1EmployeeNum'),
 
-    // --- CO-BORROWER 2 ---
+    // CO-BORROWER 2
     coBorrower2Name:         val('coBorrower2Name'),
     coBorrower2Address:      val('coBorrower2Address'),
     co2StayYears:            val('co2StayYrs'),
@@ -1015,7 +926,7 @@ function submitForm() {
     coBorrower2DateEmployed: val('coBorrower2DateEmployed'),
     coBorrower2EmployeeNum:  val('coBorrower2EmployeeNum'),
 
-    // --- IMMEDIATE SUPERIOR (now correctly after co-borrowers) ---
+    // IMMEDIATE SUPERIOR (after co-borrowers — fixes the column shift bug)
     superiorFirstName:       val('superiorFirst'),
     superiorMiddleName:      val('superiorMiddle'),
     superiorLastName:        val('superiorLast'),
@@ -1024,7 +935,7 @@ function submitForm() {
     superiorLandline:        val('superiorLandline'),
     superiorMobile:          val('superiorMobile'),
 
-    // --- LOAN PROCEEDS ---
+    // LOAN PROCEEDS
     loanProceeds:            getChecked('loanProceeds'),
     accountNumber:           val('accountNumber')
   };
