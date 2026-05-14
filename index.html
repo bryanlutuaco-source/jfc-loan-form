@@ -853,7 +853,7 @@ function submitForm() {
   statusEl.textContent = 'Submitting… please wait';
   statusEl.style.color = '#555';
 
-  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbypO6iPbd0mOd6wd-3VlUE4B35eKEBJaAnRqfOJ-gWgsHZZxjDwdmZYPbYD35Q0Pn4/exec";
+ var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbySZ24MCKlwOrdQVB8ea2XTdJHuaaup3_5ar4d1oI6rQZTBtLpD8amwLrq7S0YuezeS/exec";
 
   /* =================================================================
      formData — fields in the EXACT same order as your Google Sheet
@@ -861,94 +861,90 @@ function submitForm() {
      BEFORE Immediate Superior so data never lands in the wrong column.
      ================================================================= */
   var formData = {
-    /* ── meta ── */
-    timestamp:                new Date().toLocaleString(),
-    date:                     val('formDate'),
+  // A: Date Submitted (added by server)
+  // B: Form Date
+  date:                val('formDate'),
 
-    /* ── loan details ── */
-    amountApplied:            val('amountApplied'),
-    loanTerm:                 val('loanTerm'),
-    loanPurpose:              getRadio('loanPurpose'),
-    purposeOther:             val('purposeOther'),
-    howFound:                 getRadio('howFound'),
-    memberOtherFI:            getRadio('memberOtherFI'),
-    fiType:                   getRadio('fiType'),
-    creditCardBank:           val('creditCardBank'),
-    onlineLendingApp:         val('onlineLendingApp'),
+  // C: Amount Applied  D: Loan Term  E: Loan Purpose  F: How Found
+  amountApplied:       val('amountApplied'),
+  loanTerm:            val('loanTerm'),
+  loanPurpose:         getRadio('loanPurpose'),
+  howFound:            getRadio('howFound'),
 
-    /* ── borrower personal ── */
-    firstName:                val('borrowerFirst'),
-    middleName:               val('borrowerMiddle'),
-    lastName:                 val('borrowerLast'),
-    civilStatus:              getRadio('civilStatus'),
-    dateOfBirth:              val('dateOfBirth'),
-    dependentsMinor:          val('dependentsMinor'),
-    dependentsAdult:          val('dependentsAdult'),
-    residenceOwnership:       getRadio('residenceOwnership'),
-    rentAmount:               val('rentAmount'),
-    presentAddress:           val('presentAddress'),
-    presentStayYears:         val('presentStayYears'),
-    presentStayMonths:        val('presentStayMonths'),
-    provincialAddress:        val('provincialAddress'),
-    provincialStayYears:      val('provincialStayYears'),
-    provincialStayMonths:     val('provincialStayMonths'),
-    additionalNotes:          val('additionalNotes'),
+  // G: First Name  H: Middle Name  I: Last Name
+  firstName:           val('borrowerFirst'),
+  middleName:          val('borrowerMiddle'),
+  lastName:            val('borrowerLast'),
 
-    /* ── borrower employment ── */
-    homePhone:                val('homePhone'),
-    mobilePhone:              val('mobilePhone'),
-    workPhone:                val('workPhone'),
-    personalEmail:            val('personalEmail'),
-    storeEmail:               val('storeEmail'),
-    company:                  val('company'),
-    companyBranch:            val('companyBranch'),
-    location:                 val('location'),
-    position:                 val('position'),
-    employeeNumber:           val('employeeNumber'),
-    dateOfEmployment:         val('dateOfEmployment'),
-    sssTin:                   val('sssTin'),
+  // J: Civil Status  K: Date of Birth  L: Dependents Minor  M: Dependents Adult
+  civilStatus:         getRadio('civilStatus'),
+  dateOfBirth:         val('dateOfBirth'),
+  dependentsMinor:     val('dependentsMinor'),
+  dependentsAdult:     val('dependentsAdult'),
 
-    /* ── co-borrower 1 ── */
-    coBorrower1Name:          val('coBorrower1Name'),
-    coBorrower1Address:       val('coBorrower1Address'),
-    co1StayYears:             val('co1StayYrs'),
-    co1StayMonths:            val('co1StayMos'),
-    coBorrower1ContactLabel:  val('co1ContactLabel'),
-    coBorrower1Contact:       val('coBorrower1Contact'),
-    coBorrower1Company:       val('coBorrower1Company'),
-    coBorrower1Email:         val('coBorrower1Email'),
-    coBorrower1Location:      val('coBorrower1Location'),
-    coBorrower1Position:      val('coBorrower1Position'),
-    coBorrower1DateEmployed:  val('coBorrower1DateEmployed'),
-    coBorrower1EmployeeNum:   val('coBorrower1EmployeeNum'),
+  // N: Residence Ownership  O: Present Address  P: Stay Years  Q: Stay Months
+  residenceOwnership:  getRadio('residenceOwnership'),
+  presentAddress:      val('presentAddress'),
+  presentStayYears:    val('presentStayYears'),
+  presentStayMonths:   val('presentStayMonths'),
 
-    /* ── co-borrower 2 ── */
-    coBorrower2Name:          val('coBorrower2Name'),
-    coBorrower2Address:       val('coBorrower2Address'),
-    co2StayYears:             val('co2StayYrs'),
-    co2StayMonths:            val('co2StayMos'),
-    coBorrower2ContactLabel:  val('co2ContactLabel'),
-    coBorrower2Contact:       val('coBorrower2Contact'),
-    coBorrower2Company:       val('coBorrower2Company'),
-    coBorrower2Email:         val('coBorrower2Email'),
-    coBorrower2Location:      val('coBorrower2Location'),
-    coBorrower2Position:      val('coBorrower2Position'),
-    coBorrower2DateEmployed:  val('coBorrower2DateEmployed'),
-    coBorrower2EmployeeNum:   val('coBorrower2EmployeeNum'),
+  // R: Provincial Address
+  provincialAddress:   val('provincialAddress'),
 
-    /* ── immediate superior (AFTER co-borrowers — fixes column shift) ── */
-    superiorFirstName:        val('superiorFirst'),
-    superiorMiddleName:       val('superiorMiddle'),
-    superiorLastName:         val('superiorLast'),
-    superiorPosition:         val('superiorPosition'),
-    superiorYearsService:     val('superiorYearsService'),
-    superiorLandline:         val('superiorLandline'),
-    superiorMobile:           val('superiorMobile'),
+  // S: Home Phone  T: Mobile Phone  U: Work Phone  V: Personal Email  W: Store Email
+  homePhone:           val('homePhone'),
+  mobilePhone:         val('mobilePhone'),
+  workPhone:           val('workPhone'),
+  personalEmail:       val('personalEmail'),
+  storeEmail:          val('storeEmail'),
 
-    /* ── loan proceeds ── */
-    loanProceeds:             getRadio('loanProceeds'),
-    accountNumber:            val('accountNumber')
-  };
+  // X: Company  Y: Location/Dept  Z: Position  AA: Employee/SAP No.
+  // AB: Date of Employment  AC: SSS/TIN
+  company:             val('company'),
+  location:            val('location'),
+  position:            val('position'),
+  employeeNumber:      val('employeeNumber'),
+  dateOfEmployment:    val('dateOfEmployment'),
+  sssTin:              val('sssTin'),
+
+  // AD: Co-Borrower 1 Name  AE: Address  AF: Contact  AG: Company
+  // AH: Email  AI: Location  AJ: Position  AK: Date Employed  AL: Employee No.
+  coBorrower1Name:         val('coBorrower1Name'),
+  coBorrower1Address:      val('coBorrower1Address'),
+  coBorrower1Contact:      val('coBorrower1Contact'),
+  coBorrower1Company:      val('coBorrower1Company'),
+  coBorrower1Email:        val('coBorrower1Email'),
+  coBorrower1Location:     val('coBorrower1Location'),
+  coBorrower1Position:     val('coBorrower1Position'),
+  coBorrower1DateEmployed: val('coBorrower1DateEmployed'),
+  coBorrower1EmployeeNum:  val('coBorrower1EmployeeNum'),
+
+  // AM: Co-Borrower 2 Name  AN: Address  AO: Contact  AP: Company
+  // AQ: Email  AR: Location  AS: Position  AT: Date Employed  AU: Employee No.
+  coBorrower2Name:         val('coBorrower2Name'),
+  coBorrower2Address:      val('coBorrower2Address'),
+  coBorrower2Contact:      val('coBorrower2Contact'),
+  coBorrower2Company:      val('coBorrower2Company'),
+  coBorrower2Email:        val('coBorrower2Email'),
+  coBorrower2Location:     val('coBorrower2Location'),
+  coBorrower2Position:     val('coBorrower2Position'),
+  coBorrower2DateEmployed: val('coBorrower2DateEmployed'),
+  coBorrower2EmployeeNum:  val('coBorrower2EmployeeNum'),
+
+  // AV: Superior First  AW: Middle  AX: Last
+  // AY: Position  AZ: Yrs Service  BA: Landline  BB: Mobile
+  superiorFirstName:   val('superiorFirst'),
+  superiorMiddleName:  val('superiorMiddle'),
+  superiorLastName:    val('superiorLast'),
+  superiorPosition:    val('superiorPosition'),
+  superiorYearsService:val('superiorYearsService'),
+  superiorLandline:    val('superiorLandline'),
+  superiorMobile:      val('superiorMobile'),
+
+  // BC: Loan Proceeds Type  BD: Account Number
+  loanProceeds:        getRadio('loanProceeds'),
+  accountNumber:       val('accountNumber')
+};
 
   var url = SCRIPT_URL + "?data=" + encodeURIComponent(JSON.stringify(formData));
 
