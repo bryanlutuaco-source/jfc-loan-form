@@ -220,11 +220,23 @@ input[type="checkbox"]:checked::after {
         Php <input class="input" id="amountApplied" type="number" placeholder="0.00">
         <span id="amountApplied-err" class="error-label" style="display:none;">Amount is required.</span>
       </div>
-      <div class="box" style="width:40%;">
-        <div class="yellow">Term <span class="required-mark">*</span></div>
-        <input class="input" id="loanTerm" type="text" placeholder="e.g. 12 months">
-        <span id="loanTerm-err" class="error-label" style="display:none;">Loan term is required.</span>
-      </div>
+     <div class="box" style="width:40%;">
+  <div class="yellow">Term <span class="required-mark">*</span></div>
+  <select class="input" id="loanTerm" style="border:none; border-bottom:1px solid black; background:transparent; width:100%; outline:none;">
+    <option value="">-- Select Term --</option>
+    <option value="3 months">3 months</option>
+    <option value="6 months">6 months</option>
+    <option value="9 months">9 months</option>
+    <option value="12 months">12 months</option>
+    <option value="18 months">18 months</option>
+    <option value="24 months">24 months</option>
+    <option value="30 months">30 months</option>
+    <option value="36 months">36 months</option>
+    <option value="48 months">48 months</option>
+    <option value="60 months">60 months</option>
+  </select>
+  <span id="loanTerm-err" class="error-label" style="display:none;">Loan term is required.</span>
+</div>
     </div>
     <div class="row">
       <div class="box" style="width:60%;">
