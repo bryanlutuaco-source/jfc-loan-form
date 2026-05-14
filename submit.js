@@ -1,116 +1,118 @@
 function doGet(e) {
-  // Handle form data submitted via GET (query string)
-  if (e && e.parameter && e.parameter.data) {
-    try {
+  try {
+    if (!e) {
+      return ContentService
+        .createTextOutput(JSON.stringify({ status: "ok", message: "No event object" }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    if (e.parameter && e.parameter.data) {
+      const data = JSON.parse(e.parameter.data);
       const sheet = SpreadsheetApp
         .openById("1qDm2xRU_lAM0YpMyrcWaFllksvCNmeggDT3BJseUk1g")
         .getSheetByName("Sheet1");
 
-      const data = JSON.parse(e.parameter.data);
-
       sheet.appendRow([
-  data.timestamp,
-  data.date,
+        // A: Date Submitted
+        new Date().toLocaleString(),
+        // B: Form Date
+        data.date,
 
-  // Loan Details
-  data.amountApplied,
-  data.loanTerm,
-  data.loanPurpose,
-  data.purposeOther,
-  data.howFound,
-  data.memberOtherFI,
-  data.fiType,
-  data.creditCardBank,
-  data.onlineLendingApp,
+        // C: Amount Applied  D: Loan Term  E: Loan Purpose  F: How Found
+        data.amountApplied,
+        data.loanTerm,
+        data.loanPurpose,
+        data.howFound,
 
-  // Borrower Personal
-  data.firstName,
-  data.middleName,
-  data.lastName,
-  data.civilStatus,
-  data.dateOfBirth,
-  data.dependentsMinor,
-  data.dependentsAdult,
-  data.residenceOwnership,
-  data.rentAmount,
-  data.presentAddress,
-  data.presentStayYears,
-  data.presentStayMonths,
-  data.provincialAddress,
-  data.provincialStayYears,
-  data.provincialStayMonths,
-  data.additionalNotes,
+        // G: First Name  H: Middle Name  I: Last Name
+        data.firstName,
+        data.middleName,
+        data.lastName,
 
-  // Borrower Employment
-  data.homePhone,
-  data.mobilePhone,
-  data.workPhone,
-  data.personalEmail,
-  data.storeEmail,
-  data.company,
-  data.companyBranch,
-  data.location,
-  data.position,
-  data.employeeNumber,
-  data.dateOfEmployment,
-  data.sssTin,
+        // J: Civil Status  K: Date of Birth  L: Dependents Minor  M: Dependents Adult
+        data.civilStatus,
+        data.dateOfBirth,
+        data.dependentsMinor,
+        data.dependentsAdult,
 
-  // Co-Borrower 1
-  data.coBorrower1Name,
-  data.coBorrower1Address,
-  data.co1StayYears,
-  data.co1StayMonths,
-  data.coBorrower1ContactLabel,
-  data.coBorrower1Contact,
-  data.coBorrower1Company,
-  data.coBorrower1Email,
-  data.coBorrower1Location,
-  data.coBorrower1Position,
-  data.coBorrower1DateEmployed,
-  data.coBorrower1EmployeeNum,
+        // N: Residence Ownership  O: Present Address  P: Stay Years  Q: Stay Months
+        data.residenceOwnership,
+        data.presentAddress,
+        data.presentStayYears,
+        data.presentStayMonths,
 
-  // Co-Borrower 2
-  data.coBorrower2Name,
-  data.coBorrower2Address,
-  data.co2StayYears,
-  data.co2StayMonths,
-  data.coBorrower2ContactLabel,
-  data.coBorrower2Contact,
-  data.coBorrower2Company,
-  data.coBorrower2Email,
-  data.coBorrower2Location,
-  data.coBorrower2Position,
-  data.coBorrower2DateEmployed,
-  data.coBorrower2EmployeeNum,
+        // R: Provincial Address
+        data.provincialAddress,
 
-  // ✅ Immediate Superior — must be HERE, after Co-Borrower 2
-  data.superiorFirstName,
-  data.superiorMiddleName,
-  data.superiorLastName,
-  data.superiorPosition,
-  data.superiorYearsService,
-  data.superiorLandline,
-  data.superiorMobile,
+        // S: Home Phone  T: Mobile Phone  U: Work Phone  V: Personal Email  W: Store Email
+        data.homePhone,
+        data.mobilePhone,
+        data.workPhone,
+        data.personalEmail,
+        data.storeEmail,
 
-  // Loan Proceeds
-  data.loanProceeds,
-  data.accountNumber
-]);
+        // X: Company  Y: Location/Dept  Z: Position  AA: Employee/SAP No.
+        // AB: Date of Employment  AC: SSS/TIN
+        data.company,
+        data.location,
+        data.position,
+        data.employeeNumber,
+        data.dateOfEmployment,
+        data.sssTin,
+
+        // AD: Co-Borrower 1 Name  AE: Address  AF: Contact  AG: Company
+        // AH: Email  AI: Location  AJ: Position  AK: Date Employed  AL: Employee No.
+        data.coBorrower1Name,
+        data.coBorrower1Address,
+        data.coBorrower1Contact,
+        data.coBorrower1Company,
+        data.coBorrower1Email,
+        data.coBorrower1Location,
+        data.coBorrower1Position,
+        data.coBorrower1DateEmployed,
+        data.coBorrower1EmployeeNum,
+
+        // AM: Co-Borrower 2 Name  AN: Address  AO: Contact  AP: Company
+        // AQ: Email  AR: Location  AS: Position  AT: Date Employed  AU: Employee No.
+        data.coBorrower2Name,
+        data.coBorrower2Address,
+        data.coBorrower2Contact,
+        data.coBorrower2Company,
+        data.coBorrower2Email,
+        data.coBorrower2Location,
+        data.coBorrower2Position,
+        data.coBorrower2DateEmployed,
+        data.coBorrower2EmployeeNum,
+
+        // AV: Superior First Name  AW: Middle Name  AX: Last Name
+        // AY: Position  AZ: Yrs Service  BA: Landline  BB: Mobile
+        data.superiorFirstName,
+        data.superiorMiddleName,
+        data.superiorLastName,
+        data.superiorPosition,
+        data.superiorYearsService,
+        data.superiorLandline,
+        data.superiorMobile,
+
+        // BC: Loan Proceeds Type  BD: Account Number
+        data.loanProceeds,
+        data.accountNumber
+      ]);
 
       return ContentService
         .createTextOutput(JSON.stringify({ status: "success" }))
         .setMimeType(ContentService.MimeType.JSON);
-
-    } catch (err) {
-      return ContentService
-        .createTextOutput(JSON.stringify({ status: "error", message: err.message }))
-        .setMimeType(ContentService.MimeType.JSON);
     }
-  }
 
-  // No data param — just serve the HTML page
-  return HtmlService.createHtmlOutputFromFile('Index')
-    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+    return ContentService
+      .createTextOutput(JSON.stringify({ status: "ok", message: "Service running" }))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch (err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ status: "error", message: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
 }
 
 function doPost(e) {
@@ -120,92 +122,32 @@ function doPost(e) {
         .createTextOutput(JSON.stringify({ status: "error", message: "No data received" }))
         .setMimeType(ContentService.MimeType.JSON);
     }
-
     const sheet = SpreadsheetApp
       .openById("1qDm2xRU_lAM0YpMyrcWaFllksvCNmeggDT3BJseUk1g")
       .getSheetByName("Sheet1");
-
     const data = JSON.parse(e.postData.contents);
-
     sheet.appendRow([
-      data.timestamp,
-      data.date,
-      data.amountApplied,
-      data.loanTerm,
-      data.loanPurpose,
-      data.purposeOther,
-      data.howFound,
-      data.memberOtherFI,
-      data.fiType,
-      data.creditCardBank,
-      data.onlineLendingApp,
-      data.firstName,
-      data.middleName,
-      data.lastName,
-      data.civilStatus,
-      data.dateOfBirth,
-      data.dependentsMinor,
-      data.dependentsAdult,
-      data.residenceOwnership,
-      data.rentAmount,
-      data.presentAddress,
-      data.presentStayYears,
-      data.presentStayMonths,
+      new Date().toLocaleString(), data.date,
+      data.amountApplied, data.loanTerm, data.loanPurpose, data.howFound,
+      data.firstName, data.middleName, data.lastName,
+      data.civilStatus, data.dateOfBirth, data.dependentsMinor, data.dependentsAdult,
+      data.residenceOwnership, data.presentAddress, data.presentStayYears, data.presentStayMonths,
       data.provincialAddress,
-      data.provincialStayYears,
-      data.provincialStayMonths,
-      data.additionalNotes,
-      data.homePhone,
-      data.mobilePhone,
-      data.workPhone,
-      data.personalEmail,
-      data.storeEmail,
-      data.company,
-      data.companyBranch,
-      data.location,
-      data.position,
-      data.employeeNumber,
-      data.dateOfEmployment,
-      data.sssTin,
-      data.coBorrower1Name,
-      data.coBorrower1Address,
-      data.co1StayYears,
-      data.co1StayMonths,
-      data.coBorrower1ContactLabel,
-      data.coBorrower1Contact,
-      data.coBorrower1Company,
-      data.coBorrower1Email,
-      data.coBorrower1Location,
-      data.coBorrower1Position,
-      data.coBorrower1DateEmployed,
-      data.coBorrower1EmployeeNum,
-      data.coBorrower2Name,
-      data.coBorrower2Address,
-      data.co2StayYears,
-      data.co2StayMonths,
-      data.coBorrower2ContactLabel,
-      data.coBorrower2Contact,
-      data.coBorrower2Company,
-      data.coBorrower2Email,
-      data.coBorrower2Location,
-      data.coBorrower2Position,
-      data.coBorrower2DateEmployed,
-      data.coBorrower2EmployeeNum,
-      data.superiorFirstName,
-      data.superiorMiddleName,
-      data.superiorLastName,
-      data.superiorPosition,
-      data.superiorYearsService,
-      data.superiorLandline,
-      data.superiorMobile,
-      data.loanProceeds,
-      data.accountNumber
+      data.homePhone, data.mobilePhone, data.workPhone, data.personalEmail, data.storeEmail,
+      data.company, data.location, data.position, data.employeeNumber, data.dateOfEmployment, data.sssTin,
+      data.coBorrower1Name, data.coBorrower1Address, data.coBorrower1Contact,
+      data.coBorrower1Company, data.coBorrower1Email, data.coBorrower1Location,
+      data.coBorrower1Position, data.coBorrower1DateEmployed, data.coBorrower1EmployeeNum,
+      data.coBorrower2Name, data.coBorrower2Address, data.coBorrower2Contact,
+      data.coBorrower2Company, data.coBorrower2Email, data.coBorrower2Location,
+      data.coBorrower2Position, data.coBorrower2DateEmployed, data.coBorrower2EmployeeNum,
+      data.superiorFirstName, data.superiorMiddleName, data.superiorLastName,
+      data.superiorPosition, data.superiorYearsService, data.superiorLandline, data.superiorMobile,
+      data.loanProceeds, data.accountNumber
     ]);
-
     return ContentService
       .createTextOutput(JSON.stringify({ status: "success" }))
       .setMimeType(ContentService.MimeType.JSON);
-
   } catch (err) {
     return ContentService
       .createTextOutput(JSON.stringify({ status: "error", message: err.message }))
