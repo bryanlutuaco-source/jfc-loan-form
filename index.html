@@ -395,18 +395,45 @@ input[type="checkbox"]:checked::after {
   <td colspan="2"><input class="input" id="location" type="text"><span id="location-err" class="error-label" style="display:none;">Location is required.</span></td>
 </tr>
 <tr>
-  <td style="font-weight:bold;">Position <span class="required-mark">*</span></td>
-  <td style="font-weight:bold;">Employee / SAP Number <span class="required-mark">*</span></td>
-  <td style="font-weight:bold;">Date of Employment <span class="required-mark">*</span></td>
-  <td style="font-weight:bold;">SSS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TIN</td>
+  <td style="font-weight:bold; vertical-align:bottom; padding:4px;">Position <span class="required-mark">*</span></td>
+  <td style="font-weight:bold; vertical-align:bottom; padding:4px;">Employee / SAP Number <span class="required-mark">*</span></td>
+  <td style="font-weight:bold; vertical-align:bottom; padding:4px;">Date of Employment <span class="required-mark">*</span></td>
+  <td style="font-weight:bold; padding:0;">
+    <table style="width:100%; border-collapse:collapse; height:100%;">
+      <tr>
+        <td style="border:none; border-right:1px solid black; font-weight:bold; padding:4px;">SSS Number</td>
+        <td style="border:none; font-weight:bold; padding:4px;">TIN Number</td>
+      </tr>
+    </table>
+  </td>
 </tr>
-<tr style="background:#dfe3f5; height:25px;">
-  <td><input class="input" id="position" type="text"><span id="position-err" class="error-label" style="display:none;">Position is required.</span></td>
-  <td><input class="input" id="employeeNumber" type="text"><span id="employeeNumber-err" class="error-label" style="display:none;">Employee/SAP number is required.</span></td>
-  <td><input class="input" id="dateOfEmployment" type="date"><span id="dateOfEmployment-err" class="error-label" style="display:none;">Date of employment is required.</span></td>
-  <td><input class="input" id="sssTin" type="text"></td>
+<tr style="background:#dfe3f5;">
+  <td style="padding:4px; vertical-align:middle;">
+    <input class="input" id="position" type="text">
+    <span id="position-err" class="error-label" style="display:none;">Position is required.</span>
+  </td>
+  <td style="padding:4px; vertical-align:middle;">
+    <input class="input" id="employeeNumber" type="text">
+    <span id="employeeNumber-err" class="error-label" style="display:none;">Employee/SAP number is required.</span>
+  </td>
+  <td style="padding:4px; vertical-align:middle;">
+    <input class="input" id="dateOfEmployment" type="date">
+    <span id="dateOfEmployment-err" class="error-label" style="display:none;">Date of employment is required.</span>
+  </td>
+  <td style="padding:0; background:#dfe3f5;">
+    <table style="width:100%; border-collapse:collapse; height:100%;">
+      <tr>
+        <td style="border:none; border-right:1px solid black; padding:4px; background:#dfe3f5;">
+  <input class="input" id="sssNumber" type="text" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+</td>
+       <td style="border:none; padding:4px; background:#dfe3f5;">
+  <input class="input" id="tinNumber" type="text" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+</td>
+        </td>
+      </tr>
+    </table>
+  </td>
 </tr>
-</table>
 
 <!-- CO-BORROWERS -->
 <table style="margin-top:8px;">
@@ -514,10 +541,10 @@ input[type="checkbox"]:checked::after {
 </tr>
 <tr>
   <td style="padding:2px;"><input class="input" id="superiorPosition"><span id="superiorPosition-err" class="error-label" style="display:none;">Superior's position is required.</span></td>
-  <td style="padding:2px;"><input class="input" id="superiorYearsService"></td>
-  <td style="padding:2px;"><input class="input" id="superiorContactLabel"></td>
-  <td style="padding:2px;"><input class="input" id="superiorLandline"></td>
-  <td style="padding:2px;"><input class="input" id="superiorMobile"><span id="superiorMobile-err" class="error-label" style="display:none;">Superior's mobile is required.</span></td>
+  <td style="padding:2px;"><input class="input" id="superiorYearsService" type="text" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></td>
+  <td style="padding:2px;"><input class="input" id="superiorContactLabel" type="text" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></td>
+  <td style="padding:2px;"><input class="input" id="superiorLandline" type="text" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></td>
+  <td style="padding:2px;"><input class="input" id="superiorMobile" type="text" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')"><span id="superiorMobile-err" class="error-label" style="display:none;">Superior's mobile is required.</span></td>
 </tr>
 </table>
 
@@ -613,8 +640,8 @@ I hereby certify that __________________________ of __________________________ C
 <tr>
   <td><input type="radio" name="loanProceeds" value="Cheque"> Cheque</td>
   <td><input type="radio" name="loanProceeds" value="Fund Transfer"> Fund Transfer</td>
-  <td>(Indicate Account Number) <span class="required-mark">*</span></td>
-  <td><input type="text" id="accountNumber" placeholder="Account Number" style="width:100%; border:none; outline:none;"></td>
+ <td>(Indicate Account Number) <span class="required-mark">*</span></td>
+<td><input type="text" id="accountNumber" placeholder="Account Number" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')" style="width:100%; border:none; outline:none;"></td>
 </tr>
 <tr>
   <td colspan="4"><span id="loanProceeds-err" class="error-label" style="display:none;">Please select loan proceeds method and enter account number.</span></td>
@@ -917,8 +944,8 @@ function submitForm() {
   position:            val('position'),
   employeeNumber:      val('employeeNumber'),
   dateOfEmployment:    val('dateOfEmployment'),
-  sssTin:              val('sssTin'),
-
+  sss:                val('sss'),
+  Tin:                val('Tin'),
   // AD: Co-Borrower 1 Name  AE: Address  AF: Contact  AG: Company
   // AH: Email  AI: Location  AJ: Position  AK: Date Employed  AL: Employee No.
   coBorrower1Name:         val('coBorrower1Name'),
