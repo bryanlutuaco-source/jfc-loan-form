@@ -41,7 +41,8 @@ function doGet(e) {
         data.position,               // Z
         data.employeeNumber,         // AA
         data.dateOfEmployment,       // AB
-        data.sssTin,                 // AC
+        data.sss,                    // AC
+        data.Tin,                    // 
         data.coBorrower1Name,        // AD
         data.coBorrower1Address,     // AE
         data.coBorrower1Contact,     // AF
@@ -106,7 +107,8 @@ function doPost(e) {
       data.residenceOwnership, data.presentAddress, data.presentStayYears, data.presentStayMonths,
       data.provincialAddress,
       data.homePhone, data.mobilePhone, data.workPhone, data.personalEmail, data.storeEmail,
-      data.company, data.location, data.position, data.employeeNumber, data.dateOfEmployment, data.sssTin,
+      data.company, data.location, data.position, data.employeeNumber, data.dateOfEmployment, data.sss,
+      data.company, data.location, data.position, data.employeeNumber, data.dateOfEmployment, data.Tin,
       data.coBorrower1Name, data.coBorrower1Address, data.coBorrower1Contact,
       data.coBorrower1Company, data.coBorrower1Email, data.coBorrower1Location,
       data.coBorrower1Position, data.coBorrower1DateEmployed, data.coBorrower1EmployeeNum,
