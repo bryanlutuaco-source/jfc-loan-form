@@ -13,90 +13,62 @@ function doGet(e) {
         .getSheetByName("Sheet1");
 
       sheet.appendRow([
-        // A: Date Submitted
-        new Date().toLocaleString(),
-        // B: Form Date
-        data.date,
-
-        // C: Amount Applied  D: Loan Term  E: Loan Purpose  F: How Found
-        data.amountApplied,
-        data.loanTerm,
-        data.loanPurpose,
-        data.howFound,
-
-        // G: First Name  H: Middle Name  I: Last Name
-        data.firstName,
-        data.middleName,
-        data.lastName,
-
-        // J: Civil Status  K: Date of Birth  L: Dependents Minor  M: Dependents Adult
-        data.civilStatus,
-        data.dateOfBirth,
-        data.dependentsMinor,
-        data.dependentsAdult,
-
-        // N: Residence Ownership  O: Present Address  P: Stay Years  Q: Stay Months
-        data.residenceOwnership,
-        data.presentAddress,
-        data.presentStayYears,
-        data.presentStayMonths,
-
-        // R: Provincial Address
-        data.provincialAddress,
-
-        // S: Home Phone  T: Mobile Phone  U: Work Phone  V: Personal Email  W: Store Email
-        data.homePhone,
-        data.mobilePhone,
-        data.workPhone,
-        data.personalEmail,
-        data.storeEmail,
-
-        // X: Company  Y: Location/Dept  Z: Position  AA: Employee/SAP No.
-        // AB: Date of Employment  AC: SSS/TIN
-        data.company,
-        data.location,
-        data.position,
-        data.employeeNumber,
-        data.dateOfEmployment,
-        data.sssTin,
-
-        // AD: Co-Borrower 1 Name  AE: Address  AF: Contact  AG: Company
-        // AH: Email  AI: Location  AJ: Position  AK: Date Employed  AL: Employee No.
-        data.coBorrower1Name,
-        data.coBorrower1Address,
-        data.coBorrower1Contact,
-        data.coBorrower1Company,
-        data.coBorrower1Email,
-        data.coBorrower1Location,
-        data.coBorrower1Position,
-        data.coBorrower1DateEmployed,
-        data.coBorrower1EmployeeNum,
-
-        // AM: Co-Borrower 2 Name  AN: Address  AO: Contact  AP: Company
-        // AQ: Email  AR: Location  AS: Position  AT: Date Employed  AU: Employee No.
-        data.coBorrower2Name,
-        data.coBorrower2Address,
-        data.coBorrower2Contact,
-        data.coBorrower2Company,
-        data.coBorrower2Email,
-        data.coBorrower2Location,
-        data.coBorrower2Position,
-        data.coBorrower2DateEmployed,
-        data.coBorrower2EmployeeNum,
-
-        // AV: Superior First Name  AW: Middle Name  AX: Last Name
-        // AY: Position  AZ: Yrs Service  BA: Landline  BB: Mobile
-        data.superiorFirstName,
-        data.superiorMiddleName,
-        data.superiorLastName,
-        data.superiorPosition,
-        data.superiorYearsService,
-        data.superiorLandline,
-        data.superiorMobile,
-
-        // BC: Loan Proceeds Type  BD: Account Number
-        data.loanProceeds,
-        data.accountNumber
+        new Date().toLocaleString(), // A: Date Submitted
+        data.date,                   // B: Form Date
+        data.amountApplied,          // C
+        data.loanTerm,               // D
+        data.loanPurpose,            // E
+        data.howFound,               // F
+        data.firstName,              // G
+        data.middleName,             // H
+        data.lastName,               // I
+        data.civilStatus,            // J
+        data.dateOfBirth,            // K
+        data.dependentsMinor,        // L
+        data.dependentsAdult,        // M
+        data.residenceOwnership,     // N
+        data.presentAddress,         // O
+        data.presentStayYears,       // P
+        data.presentStayMonths,      // Q
+        data.provincialAddress,      // R
+        data.homePhone,              // S
+        data.mobilePhone,            // T
+        data.workPhone,              // U
+        data.personalEmail,          // V
+        data.storeEmail,             // W
+        data.company,                // X
+        data.location,               // Y
+        data.position,               // Z
+        data.employeeNumber,         // AA
+        data.dateOfEmployment,       // AB
+        data.sssTin,                 // AC
+        data.coBorrower1Name,        // AD
+        data.coBorrower1Address,     // AE
+        data.coBorrower1Contact,     // AF
+        data.coBorrower1Company,     // AG
+        data.coBorrower1Email,       // AH
+        data.coBorrower1Location,    // AI
+        data.coBorrower1Position,    // AJ
+        data.coBorrower1DateEmployed,// AK
+        data.coBorrower1EmployeeNum, // AL
+        data.coBorrower2Name,        // AM
+        data.coBorrower2Address,     // AN
+        data.coBorrower2Contact,     // AO
+        data.coBorrower2Company,     // AP
+        data.coBorrower2Email,       // AQ
+        data.coBorrower2Location,    // AR
+        data.coBorrower2Position,    // AS
+        data.coBorrower2DateEmployed,// AT
+        data.coBorrower2EmployeeNum, // AU
+        data.superiorFirstName,      // AV ✅
+        data.superiorMiddleName,     // AW
+        data.superiorLastName,       // AX
+        data.superiorPosition,       // AY
+        data.superiorYearsService,   // AZ
+        data.superiorLandline,       // BA
+        data.superiorMobile,         // BB
+        data.loanProceeds,           // BC
+        data.accountNumber           // BD
       ]);
 
       return ContentService
