@@ -66,7 +66,6 @@ input[type="checkbox"]:checked::after {
 
 .field-error { border-bottom: 2px solid red !important; background-color: #fff0f0 !important; }
 .field-error-checkbox { outline: 2px solid red; border-radius: 3px; }
-.field-error-button { outline: 2px solid red !important; box-shadow: 0 0 0 2px #ffd6d6 !important; }
 .error-label { color: red; font-size: 11px; font-weight: bold; display: block; margin-top: 2px; }
 .required-mark { color: red; font-weight: bold; }
 
@@ -171,7 +170,7 @@ input[type="checkbox"]:checked::after {
               text-align:center; box-shadow:0 4px 10px rgba(0,0,0,.15); min-height:180px;
               display:flex; flex-direction:column; justify-content:center; align-items:center;">
     <div style="color:#f4b042; font-size:42px; font-weight:800; letter-spacing:2px;">MULTI-PURPOSE</div>
-    <div style="color:#fff; font-size:34px; font-weight:700; letter-spacing:3px; margin-top:8px;">LOAN FORM</div>
+    <div style="color:#fff; font-size:34px; font-weight:700; letter-spacing:3px; margin-top:8px;">E-LOAN FORM</div>
   </div>
 </td>
 <td width="40%" valign="top" style="border:none;">
@@ -218,7 +217,7 @@ input[type="checkbox"]:checked::after {
     <div class="row">
       <div class="box" style="width:60%;">
         <div class="yellow">Amount Applied <span class="required-mark">*</span></div>
-        Php <input class="input" id="amountApplied" type="text" inputmode="decimal" placeholder="0.00" oninput="formatMoneyInput(this)">
+        Php <input class="input" id="amountApplied" type="number" placeholder="0.00">
         <span id="amountApplied-err" class="error-label" style="display:none;">Amount is required.</span>
       </div>
      <div class="box" style="width:40%;">
@@ -358,16 +357,8 @@ input[type="checkbox"]:checked::after {
       <input type="text" id="provincialStayMonths" style="width:40px; margin-left:10px;"> Mo/s
     </div>
   </td>
-  <td colspan="2" style="background:#dfe3f5; text-align:center; vertical-align:middle; padding:12px;">
-    <div style="font-weight:bold; margin-bottom:8px;">Upload Company ID or any government-issued ID and 1-month latest pay slips (15th and 30th) <span class="required-mark">*</span> <span style="font-size:12px; font-weight:normal; font-style:italic;">(file or photo)</span></div>
-    <input type="file" id="additionalAttachment" accept="image/*,.pdf,.doc,.docx" style="display:none;" onchange="previewAdditionalAttachment(event)">
-    <button type="button" id="additionalAttachmentBtn" onclick="document.getElementById('additionalAttachment').click();"
-        style="padding:8px 18px; background:#f4b042; border:none; border-radius:6px; font-weight:bold; cursor:pointer; font-family:Arial,sans-serif; font-size:13px;">
-      &#128206; Attach File or Photo
-    </button>
-    <div id="additionalAttachmentName" style="margin-top:8px; font-size:12px; color:#333; word-break:break-word;"></div>
-    <img id="additionalAttachmentPreview" style="display:none; max-width:100%; max-height:90px; margin-top:6px; object-fit:contain;">
-    <span id="additionalAttachment-err" class="error-label" style="display:none;">Please attach your ID and pay slips (file or photo).</span>
+  <td colspan="2" style="background:#dfe3f5;">
+    <textarea id="additionalNotes" style="width:100%; height:90px; border:none; resize:none;"></textarea>
   </td>
 </tr>
 <tr><td colspan="4" style="font-weight:bold; font-size:16px;">EMPLOYMENT DETAILS OF BORROWER</td></tr>
@@ -612,34 +603,28 @@ I hereby certify that __________________________ of __________________________ C
 <table style="margin-top:8px;">
 <tr>
   <td class="sig-cell" style="height:120px;">
-    <div style="display:flex; flex-direction:column; height:100%; position:relative;">
-      <button type="button" id="img1-remove" onclick="removeSign(event,'img1','file1')" class="no-print"
-          style="display:none; position:absolute; top:2px; right:2px; z-index:3; width:20px; height:20px; border-radius:50%; background:#c0392b; color:#fff; border:none; font-size:12px; font-weight:bold; line-height:1; cursor:pointer; align-items:center; justify-content:center;">&times;</button>
+    <div style="display:flex; flex-direction:column; height:100%;">
       <label class="upload-area" style="flex:1; cursor:pointer; border:none; outline:none;">
         <img id="img1" class="sig-preview">
-        <input type="file" id="file1" class="file-input" accept="image/png,image/jpeg" onchange="previewSign(event,'img1')" style="display:none;">
+        <input type="file" class="file-input" accept="image/png,image/jpeg" onchange="previewSign(event,'img1')" style="display:none;">
       </label>
       <div style="margin-top:5px;"><span style="background: yellow;">Co - Borrower Signature</span></div>
     </div>
   </td>
   <td class="sig-cell" style="height:120px;">
-    <div style="display:flex; flex-direction:column; height:100%; position:relative;">
-      <button type="button" id="img2-remove" onclick="removeSign(event,'img2','file2')" class="no-print"
-          style="display:none; position:absolute; top:2px; right:2px; z-index:3; width:20px; height:20px; border-radius:50%; background:#c0392b; color:#fff; border:none; font-size:12px; font-weight:bold; line-height:1; cursor:pointer; align-items:center; justify-content:center;">&times;</button>
+    <div style="display:flex; flex-direction:column; height:100%;">
       <label class="upload-area" style="flex:1; cursor:pointer; border:none; outline:none;">
         <img id="img2" class="sig-preview">
-        <input type="file" id="file2" class="file-input" accept="image/png,image/jpeg" onchange="previewSign(event,'img2')" style="display:none;">
+        <input type="file" class="file-input" accept="image/png,image/jpeg" onchange="previewSign(event,'img2')" style="display:none;">
       </label>
       <div style="margin-top:5px;"><span style="background: yellow;">Co - Borrower Signature</span></div>
     </div>
   </td>
   <td class="sig-cell" style="height:120px;">
-    <div style="display:flex; flex-direction:column; height:100%; position:relative;">
-      <button type="button" id="img3-remove" onclick="removeSign(event,'img3','file3')" class="no-print"
-          style="display:none; position:absolute; top:2px; right:2px; z-index:3; width:20px; height:20px; border-radius:50%; background:#c0392b; color:#fff; border:none; font-size:12px; font-weight:bold; line-height:1; cursor:pointer; align-items:center; justify-content:center;">&times;</button>
+    <div style="display:flex; flex-direction:column; height:100%;">
       <label class="upload-area" style="flex:1; cursor:pointer; border:none; outline:none;">
         <img id="img3" class="sig-preview">
-        <input type="file" id="file3" class="file-input" accept="image/png,image/jpeg" onchange="previewSign(event,'img3')" style="display:none;">
+        <input type="file" class="file-input" accept="image/png,image/jpeg" onchange="previewSign(event,'img3')" style="display:none;">
       </label>
       <div style="margin-top:5px;"><span style="background: yellow;"> Borrower Signature</span></div>
     </div>
@@ -655,11 +640,11 @@ I hereby certify that __________________________ of __________________________ C
 <tr>
   <td><input type="radio" name="loanProceeds" value="Cheque"> Cheque</td>
   <td><input type="radio" name="loanProceeds" value="Fund Transfer"> Fund Transfer</td>
- <td>(Indicate Account Number)</td>
+ <td>(Indicate Account Number) <span class="required-mark">*</span></td>
 <td><input type="text" id="accountNumber" placeholder="Account Number" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')" style="width:100%; border:none; outline:none;"></td>
 </tr>
 <tr>
-  <td colspan="4"><span id="loanProceeds-err" class="error-label" style="display:none;">Please select a loan proceeds method.</span></td>
+  <td colspan="4"><span id="loanProceeds-err" class="error-label" style="display:none;">Please select loan proceeds method and enter account number.</span></td>
 </tr>
 <tr>
 <td colspan="4">
@@ -684,12 +669,12 @@ I do hereby authorize Jollibee Foods Corporation Employees' Multi-Purpose Cooper
 <tr>
   <td width="60%" style="vertical-align:top;">
     <b>LOAN OFFSET</b><br><br>
-    Loans for Offsetting: <input class="input" id="loanOffset1" type="text" style="width:60%; display:inline-block;"><br>
-    Amount <input class="input" id="loanOffsetAmount1" type="text" inputmode="decimal" placeholder="0.00" oninput="formatMoneyInput(this)" style="width:60%; display:inline-block;"><br><br>
-    <input class="input" id="loanOffset2" type="text" style="width:60%; display:inline-block;"><br>
-    Amount <input class="input" id="loanOffsetAmount2" type="text" inputmode="decimal" placeholder="0.00" oninput="formatMoneyInput(this)" style="width:60%; display:inline-block;"><br><br>
-    <input class="input" id="loanOffset3" type="text" style="width:60%; display:inline-block;"><br>
-    Amount <input class="input" id="loanOffsetAmount3" type="text" inputmode="decimal" placeholder="0.00" oninput="formatMoneyInput(this)" style="width:60%; display:inline-block;"><br><br>
+    Loans for Offsetting: ___________________________<br>
+    Amount ___________________________<br><br>
+    ___________________________<br>
+    Amount ___________________________<br><br>
+    ___________________________<br>
+    Amount ___________________________<br><br>
     <div style="position:relative; width:250px; height:100px; margin-top:40px; margin-left:auto;">
       <input type="file" id="borrowerFileInput" accept="image/*" style="display:none;" onchange="previewBorrower(event)">
       <button type="button" onclick="document.getElementById('borrowerFileInput').click();" style="position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:pointer;"></button>
@@ -735,28 +720,6 @@ function val(id) {
   return el ? el.value.trim() : '';
 }
 
-/* strips thousands-separator commas, e.g. for numeric fields on submit */
-function valNumber(id) {
-  var v = val(id);
-  return v ? v.replace(/,/g, '') : '';
-}
-
-/* formats a text input as a comma-separated amount while typing, e.g. 10000 -> 10,000 */
-function formatMoneyInput(el) {
-  var raw = el.value;
-  /* keep only digits and a single decimal point */
-  raw = raw.replace(/[^0-9.]/g, '');
-  var firstDot = raw.indexOf('.');
-  if (firstDot !== -1) {
-    raw = raw.slice(0, firstDot + 1) + raw.slice(firstDot + 1).replace(/\./g, '');
-  }
-  var parts = raw.split('.');
-  var intPart = parts[0].replace(/^0+(?=\d)/, '');
-  intPart = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  var decPart = parts.length > 1 ? '.' + parts[1].slice(0, 2) : '';
-  el.value = intPart + decPart;
-}
-
 function getRadio(name) {
   var el = document.querySelector('input[name="' + name + '"]:checked');
   return el ? el.value : '';
@@ -770,51 +733,13 @@ function updateSuperiorFullName() {
     [first, middle, last].filter(Boolean).join(' ');
 }
 
-/* ── additional attachment (file or photo) preview ── */
-function previewAdditionalAttachment(event) {
-  var file = event.target.files[0];
-  if (!file) return;
-  var nameEl = document.getElementById('additionalAttachmentName');
-  var imgEl  = document.getElementById('additionalAttachmentPreview');
-  var errEl  = document.getElementById('additionalAttachment-err');
-  var btnEl  = document.getElementById('additionalAttachmentBtn');
-  nameEl.textContent = file.name;
-  if (file.type && file.type.indexOf('image') === 0) {
-    var reader = new FileReader();
-    reader.onload = function(e) {
-      imgEl.src = e.target.result;
-      imgEl.style.display = 'block';
-    };
-    reader.readAsDataURL(file);
-  } else {
-    imgEl.style.display = 'none';
-    imgEl.src = '';
-  }
-  if (errEl) errEl.style.display = 'none';
-  if (btnEl) btnEl.classList.remove('field-error-button');
-}
-
 /* ── signature previews ── */
 function previewSign(event, imgId) {
   var file = event.target.files[0];
   if (!file) return;
   var reader = new FileReader();
-  reader.onload = function(e) {
-    document.getElementById(imgId).src = e.target.result;
-    var removeBtn = document.getElementById(imgId + '-remove');
-    if (removeBtn) removeBtn.style.display = 'flex';
-  };
+  reader.onload = function(e) { document.getElementById(imgId).src = e.target.result; };
   reader.readAsDataURL(file);
-}
-
-function removeSign(event, imgId, fileId) {
-  event.stopPropagation();
-  var img = document.getElementById(imgId);
-  var fileInput = document.getElementById(fileId);
-  var removeBtn = document.getElementById(imgId + '-remove');
-  if (img) img.src = '';
-  if (fileInput) fileInput.value = '';
-  if (removeBtn) removeBtn.style.display = 'none';
 }
 
 function previewBorrower(event) {
@@ -924,24 +849,12 @@ function validateForm() {
   checkField('superiorPosition', "Immediate Superior's Position");
   checkField('superiorMobile',   "Immediate Superior's Mobile Number");
 
-  /* Required attachment: Company ID / gov ID + pay slips */
-  var attachInput = document.getElementById('additionalAttachment');
-  var attachErr    = document.getElementById('additionalAttachment-err');
-  var attachBtn    = document.getElementById('additionalAttachmentBtn');
-  if (!attachInput || !attachInput.files || attachInput.files.length === 0) {
-    errors.push('Upload of Company ID / Government-issued ID and Pay Slips');
-    if (attachErr) attachErr.style.display = 'block';
-    if (attachBtn) attachBtn.classList.add('field-error-button');
-  } else {
-    if (attachErr) attachErr.style.display = 'none';
-    if (attachBtn) attachBtn.classList.remove('field-error-button');
-  }
-
   /* Loan Proceeds */
   var proceedsChecked = !!document.querySelector('input[name="loanProceeds"]:checked');
+  var accountNum      = val('accountNumber');
   var proceedsErr     = document.getElementById('loanProceeds-err');
-  if (!proceedsChecked) {
-    errors.push('Loan Proceeds method');
+  if (!proceedsChecked || !accountNum) {
+    errors.push('Loan Proceeds method and Account Number');
     if (proceedsErr) proceedsErr.style.display = 'block';
   } else {
     if (proceedsErr) proceedsErr.style.display = 'none';
@@ -992,7 +905,7 @@ function submitForm() {
   date:                val('formDate'),
 
   // C: Amount Applied  D: Loan Term  E: Loan Purpose  F: How Found
-  amountApplied:       valNumber('amountApplied'),
+  amountApplied:       val('amountApplied'),
   loanTerm:            val('loanTerm'),
   loanPurpose:         getRadio('loanPurpose'),
   howFound:            getRadio('howFound'),
@@ -1069,15 +982,7 @@ function submitForm() {
 
   // BC: Loan Proceeds Type  BD: Account Number
   loanProceeds:        getRadio('loanProceeds'),
-  accountNumber:       val('accountNumber'),
-
-  // Loan Offset entries
-  loanOffset1:         val('loanOffset1'),
-  loanOffsetAmount1:   valNumber('loanOffsetAmount1'),
-  loanOffset2:         val('loanOffset2'),
-  loanOffsetAmount2:   valNumber('loanOffsetAmount2'),
-  loanOffset3:         val('loanOffset3'),
-  loanOffsetAmount3:   valNumber('loanOffsetAmount3')
+  accountNumber:       val('accountNumber')
 };
 
   var url = SCRIPT_URL + "?data=" + encodeURIComponent(JSON.stringify(formData));
