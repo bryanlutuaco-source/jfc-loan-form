@@ -66,6 +66,7 @@ input[type="checkbox"]:checked::after {
 
 .field-error { border-bottom: 2px solid red !important; background-color: #fff0f0 !important; }
 .field-error-checkbox { outline: 2px solid red; border-radius: 3px; }
+.field-error-button { outline: 2px solid red !important; box-shadow: 0 0 0 2px #ffd6d6 !important; }
 .error-label { color: red; font-size: 11px; font-weight: bold; display: block; margin-top: 2px; }
 .required-mark { color: red; font-weight: bold; }
 
@@ -357,8 +358,16 @@ input[type="checkbox"]:checked::after {
       <input type="text" id="provincialStayMonths" style="width:40px; margin-left:10px;"> Mo/s
     </div>
   </td>
-  <td colspan="2" style="background:#dfe3f5;">
-    <textarea id="additionalNotes" style="width:100%; height:90px; border:none; resize:none;"></textarea>
+  <td colspan="2" style="background:#dfe3f5; text-align:center; vertical-align:middle; padding:12px;">
+    <div style="font-weight:bold; margin-bottom:8px;">Upload Company ID or any government-issued ID and 1-month latest pay slips (15th and 30th) <span class="required-mark">*</span> <span style="font-size:12px; font-weight:normal; font-style:italic;">(file or photo)</span></div>
+    <input type="file" id="additionalAttachment" accept="image/*,.pdf,.doc,.docx" style="display:none;" onchange="previewAdditionalAttachment(event)">
+    <button type="button" id="additionalAttachmentBtn" onclick="document.getElementById('additionalAttachment').click();"
+        style="padding:8px 18px; background:#f4b042; border:none; border-radius:6px; font-weight:bold; cursor:pointer; font-family:Arial,sans-serif; font-size:13px;">
+      &#128206; Attach File or Photo
+    </button>
+    <div id="additionalAttachmentName" style="margin-top:8px; font-size:12px; color:#333; word-break:break-word;"></div>
+    <img id="additionalAttachmentPreview" style="display:none; max-width:100%; max-height:90px; margin-top:6px; object-fit:contain;">
+    <span id="additionalAttachment-err" class="error-label" style="display:none;">Please attach your ID and pay slips (file or photo).</span>
   </td>
 </tr>
 <tr><td colspan="4" style="font-weight:bold; font-size:16px;">EMPLOYMENT DETAILS OF BORROWER</td></tr>
@@ -669,12 +678,12 @@ I do hereby authorize Jollibee Foods Corporation Employees' Multi-Purpose Cooper
 <tr>
   <td width="60%" style="vertical-align:top;">
     <b>LOAN OFFSET</b><br><br>
-    Loans for Offsetting: ___________________________<br>
-    Amount ___________________________<br><br>
-    ___________________________<br>
-    Amount ___________________________<br><br>
-    ___________________________<br>
-    Amount ___________________________<br><br>
+    Loans for Offsetting: <input class="input" id="loanOffset1" type="text" style="width:60%; display:inline-block;"><br>
+    Amount <input class="input" id="loanOffsetAmount1" type="number" placeholder="0.00" style="width:60%; display:inline-block;"><br><br>
+    <input class="input" id="loanOffset2" type="text" style="width:60%; display:inline-block;"><br>
+    Amount <input class="input" id="loanOffsetAmount2" type="number" placeholder="0.00" style="width:60%; display:inline-block;"><br><br>
+    <input class="input" id="loanOffset3" type="text" style="width:60%; display:inline-block;"><br>
+    Amount <input class="input" id="loanOffsetAmount3" type="number" placeholder="0.00" style="width:60%; display:inline-block;"><br><br>
     <div style="position:relative; width:250px; height:100px; margin-top:40px; margin-left:auto;">
       <input type="file" id="borrowerFileInput" accept="image/*" style="display:none;" onchange="previewBorrower(event)">
       <button type="button" onclick="document.getElementById('borrowerFileInput').click();" style="position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:pointer;"></button>
@@ -731,6 +740,30 @@ function updateSuperiorFullName() {
   var last   = document.getElementById('superiorLast').value;
   document.getElementById('superiorFullNameDisplay').textContent =
     [first, middle, last].filter(Boolean).join(' ');
+}
+
+/* ── additional attachment (file or photo) preview ── */
+function previewAdditionalAttachment(event) {
+  var file = event.target.files[0];
+  if (!file) return;
+  var nameEl = document.getElementById('additionalAttachmentName');
+  var imgEl  = document.getElementById('additionalAttachmentPreview');
+  var errEl  = document.getElementById('additionalAttachment-err');
+  var btnEl  = document.getElementById('additionalAttachmentBtn');
+  nameEl.textContent = file.name;
+  if (file.type && file.type.indexOf('image') === 0) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      imgEl.src = e.target.result;
+      imgEl.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  } else {
+    imgEl.style.display = 'none';
+    imgEl.src = '';
+  }
+  if (errEl) errEl.style.display = 'none';
+  if (btnEl) btnEl.classList.remove('field-error-button');
 }
 
 /* ── signature previews ── */
@@ -848,6 +881,19 @@ function validateForm() {
   checkField('superiorLast',     "Immediate Superior's Last Name");
   checkField('superiorPosition', "Immediate Superior's Position");
   checkField('superiorMobile',   "Immediate Superior's Mobile Number");
+
+  /* Required attachment: Company ID / gov ID + pay slips */
+  var attachInput = document.getElementById('additionalAttachment');
+  var attachErr    = document.getElementById('additionalAttachment-err');
+  var attachBtn    = document.getElementById('additionalAttachmentBtn');
+  if (!attachInput || !attachInput.files || attachInput.files.length === 0) {
+    errors.push('Upload of Company ID / Government-issued ID and Pay Slips');
+    if (attachErr) attachErr.style.display = 'block';
+    if (attachBtn) attachBtn.classList.add('field-error-button');
+  } else {
+    if (attachErr) attachErr.style.display = 'none';
+    if (attachBtn) attachBtn.classList.remove('field-error-button');
+  }
 
   /* Loan Proceeds */
   var proceedsChecked = !!document.querySelector('input[name="loanProceeds"]:checked');
@@ -982,7 +1028,15 @@ function submitForm() {
 
   // BC: Loan Proceeds Type  BD: Account Number
   loanProceeds:        getRadio('loanProceeds'),
-  accountNumber:       val('accountNumber')
+  accountNumber:       val('accountNumber'),
+
+  // Loan Offset entries
+  loanOffset1:         val('loanOffset1'),
+  loanOffsetAmount1:   val('loanOffsetAmount1'),
+  loanOffset2:         val('loanOffset2'),
+  loanOffsetAmount2:   val('loanOffsetAmount2'),
+  loanOffset3:         val('loanOffset3'),
+  loanOffsetAmount3:   val('loanOffsetAmount3')
 };
 
   var url = SCRIPT_URL + "?data=" + encodeURIComponent(JSON.stringify(formData));
