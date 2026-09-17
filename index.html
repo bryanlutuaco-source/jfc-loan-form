@@ -218,7 +218,7 @@ input[type="checkbox"]:checked::after {
     <div class="row">
       <div class="box" style="width:60%;">
         <div class="yellow">Amount Applied <span class="required-mark">*</span></div>
-        Php <input class="input" id="amountApplied" type="number" placeholder="0.00">
+        Php <input class="input" id="amountApplied" type="text" inputmode="decimal" placeholder="0.00" oninput="formatMoneyInput(this)">
         <span id="amountApplied-err" class="error-label" style="display:none;">Amount is required.</span>
       </div>
      <div class="box" style="width:40%;">
@@ -685,11 +685,11 @@ I do hereby authorize Jollibee Foods Corporation Employees' Multi-Purpose Cooper
   <td width="60%" style="vertical-align:top;">
     <b>LOAN OFFSET</b><br><br>
     Loans for Offsetting: <input class="input" id="loanOffset1" type="text" style="width:60%; display:inline-block;"><br>
-    Amount <input class="input" id="loanOffsetAmount1" type="number" placeholder="0.00" style="width:60%; display:inline-block;"><br><br>
+    Amount <input class="input" id="loanOffsetAmount1" type="text" inputmode="decimal" placeholder="0.00" oninput="formatMoneyInput(this)" style="width:60%; display:inline-block;"><br><br>
     <input class="input" id="loanOffset2" type="text" style="width:60%; display:inline-block;"><br>
-    Amount <input class="input" id="loanOffsetAmount2" type="number" placeholder="0.00" style="width:60%; display:inline-block;"><br><br>
+    Amount <input class="input" id="loanOffsetAmount2" type="text" inputmode="decimal" placeholder="0.00" oninput="formatMoneyInput(this)" style="width:60%; display:inline-block;"><br><br>
     <input class="input" id="loanOffset3" type="text" style="width:60%; display:inline-block;"><br>
-    Amount <input class="input" id="loanOffsetAmount3" type="number" placeholder="0.00" style="width:60%; display:inline-block;"><br><br>
+    Amount <input class="input" id="loanOffsetAmount3" type="text" inputmode="decimal" placeholder="0.00" oninput="formatMoneyInput(this)" style="width:60%; display:inline-block;"><br><br>
     <div style="position:relative; width:250px; height:100px; margin-top:40px; margin-left:auto;">
       <input type="file" id="borrowerFileInput" accept="image/*" style="display:none;" onchange="previewBorrower(event)">
       <button type="button" onclick="document.getElementById('borrowerFileInput').click();" style="position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:pointer;"></button>
@@ -733,6 +733,28 @@ I do hereby authorize Jollibee Foods Corporation Employees' Multi-Purpose Cooper
 function val(id) {
   var el = document.getElementById(id);
   return el ? el.value.trim() : '';
+}
+
+/* strips thousands-separator commas, e.g. for numeric fields on submit */
+function valNumber(id) {
+  var v = val(id);
+  return v ? v.replace(/,/g, '') : '';
+}
+
+/* formats a text input as a comma-separated amount while typing, e.g. 10000 -> 10,000 */
+function formatMoneyInput(el) {
+  var raw = el.value;
+  /* keep only digits and a single decimal point */
+  raw = raw.replace(/[^0-9.]/g, '');
+  var firstDot = raw.indexOf('.');
+  if (firstDot !== -1) {
+    raw = raw.slice(0, firstDot + 1) + raw.slice(firstDot + 1).replace(/\./g, '');
+  }
+  var parts = raw.split('.');
+  var intPart = parts[0].replace(/^0+(?=\d)/, '');
+  intPart = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  var decPart = parts.length > 1 ? '.' + parts[1].slice(0, 2) : '';
+  el.value = intPart + decPart;
 }
 
 function getRadio(name) {
@@ -970,7 +992,7 @@ function submitForm() {
   date:                val('formDate'),
 
   // C: Amount Applied  D: Loan Term  E: Loan Purpose  F: How Found
-  amountApplied:       val('amountApplied'),
+  amountApplied:       valNumber('amountApplied'),
   loanTerm:            val('loanTerm'),
   loanPurpose:         getRadio('loanPurpose'),
   howFound:            getRadio('howFound'),
@@ -1051,11 +1073,11 @@ function submitForm() {
 
   // Loan Offset entries
   loanOffset1:         val('loanOffset1'),
-  loanOffsetAmount1:   val('loanOffsetAmount1'),
+  loanOffsetAmount1:   valNumber('loanOffsetAmount1'),
   loanOffset2:         val('loanOffset2'),
-  loanOffsetAmount2:   val('loanOffsetAmount2'),
+  loanOffsetAmount2:   valNumber('loanOffsetAmount2'),
   loanOffset3:         val('loanOffset3'),
-  loanOffsetAmount3:   val('loanOffsetAmount3')
+  loanOffsetAmount3:   valNumber('loanOffsetAmount3')
 };
 
   var url = SCRIPT_URL + "?data=" + encodeURIComponent(JSON.stringify(formData));
