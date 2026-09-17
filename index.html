@@ -612,28 +612,34 @@ I hereby certify that __________________________ of __________________________ C
 <table style="margin-top:8px;">
 <tr>
   <td class="sig-cell" style="height:120px;">
-    <div style="display:flex; flex-direction:column; height:100%;">
+    <div style="display:flex; flex-direction:column; height:100%; position:relative;">
+      <button type="button" id="img1-remove" onclick="removeSign(event,'img1','file1')" class="no-print"
+          style="display:none; position:absolute; top:2px; right:2px; z-index:3; width:20px; height:20px; border-radius:50%; background:#c0392b; color:#fff; border:none; font-size:12px; font-weight:bold; line-height:1; cursor:pointer; align-items:center; justify-content:center;">&times;</button>
       <label class="upload-area" style="flex:1; cursor:pointer; border:none; outline:none;">
         <img id="img1" class="sig-preview">
-        <input type="file" class="file-input" accept="image/png,image/jpeg" onchange="previewSign(event,'img1')" style="display:none;">
+        <input type="file" id="file1" class="file-input" accept="image/png,image/jpeg" onchange="previewSign(event,'img1')" style="display:none;">
       </label>
       <div style="margin-top:5px;"><span style="background: yellow;">Co - Borrower Signature</span></div>
     </div>
   </td>
   <td class="sig-cell" style="height:120px;">
-    <div style="display:flex; flex-direction:column; height:100%;">
+    <div style="display:flex; flex-direction:column; height:100%; position:relative;">
+      <button type="button" id="img2-remove" onclick="removeSign(event,'img2','file2')" class="no-print"
+          style="display:none; position:absolute; top:2px; right:2px; z-index:3; width:20px; height:20px; border-radius:50%; background:#c0392b; color:#fff; border:none; font-size:12px; font-weight:bold; line-height:1; cursor:pointer; align-items:center; justify-content:center;">&times;</button>
       <label class="upload-area" style="flex:1; cursor:pointer; border:none; outline:none;">
         <img id="img2" class="sig-preview">
-        <input type="file" class="file-input" accept="image/png,image/jpeg" onchange="previewSign(event,'img2')" style="display:none;">
+        <input type="file" id="file2" class="file-input" accept="image/png,image/jpeg" onchange="previewSign(event,'img2')" style="display:none;">
       </label>
       <div style="margin-top:5px;"><span style="background: yellow;">Co - Borrower Signature</span></div>
     </div>
   </td>
   <td class="sig-cell" style="height:120px;">
-    <div style="display:flex; flex-direction:column; height:100%;">
+    <div style="display:flex; flex-direction:column; height:100%; position:relative;">
+      <button type="button" id="img3-remove" onclick="removeSign(event,'img3','file3')" class="no-print"
+          style="display:none; position:absolute; top:2px; right:2px; z-index:3; width:20px; height:20px; border-radius:50%; background:#c0392b; color:#fff; border:none; font-size:12px; font-weight:bold; line-height:1; cursor:pointer; align-items:center; justify-content:center;">&times;</button>
       <label class="upload-area" style="flex:1; cursor:pointer; border:none; outline:none;">
         <img id="img3" class="sig-preview">
-        <input type="file" class="file-input" accept="image/png,image/jpeg" onchange="previewSign(event,'img3')" style="display:none;">
+        <input type="file" id="file3" class="file-input" accept="image/png,image/jpeg" onchange="previewSign(event,'img3')" style="display:none;">
       </label>
       <div style="margin-top:5px;"><span style="background: yellow;"> Borrower Signature</span></div>
     </div>
@@ -649,11 +655,11 @@ I hereby certify that __________________________ of __________________________ C
 <tr>
   <td><input type="radio" name="loanProceeds" value="Cheque"> Cheque</td>
   <td><input type="radio" name="loanProceeds" value="Fund Transfer"> Fund Transfer</td>
- <td>(Indicate Account Number) <span class="required-mark">*</span></td>
+ <td>(Indicate Account Number)</td>
 <td><input type="text" id="accountNumber" placeholder="Account Number" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')" style="width:100%; border:none; outline:none;"></td>
 </tr>
 <tr>
-  <td colspan="4"><span id="loanProceeds-err" class="error-label" style="display:none;">Please select loan proceeds method and enter account number.</span></td>
+  <td colspan="4"><span id="loanProceeds-err" class="error-label" style="display:none;">Please select a loan proceeds method.</span></td>
 </tr>
 <tr>
 <td colspan="4">
@@ -771,8 +777,22 @@ function previewSign(event, imgId) {
   var file = event.target.files[0];
   if (!file) return;
   var reader = new FileReader();
-  reader.onload = function(e) { document.getElementById(imgId).src = e.target.result; };
+  reader.onload = function(e) {
+    document.getElementById(imgId).src = e.target.result;
+    var removeBtn = document.getElementById(imgId + '-remove');
+    if (removeBtn) removeBtn.style.display = 'flex';
+  };
   reader.readAsDataURL(file);
+}
+
+function removeSign(event, imgId, fileId) {
+  event.stopPropagation();
+  var img = document.getElementById(imgId);
+  var fileInput = document.getElementById(fileId);
+  var removeBtn = document.getElementById(imgId + '-remove');
+  if (img) img.src = '';
+  if (fileInput) fileInput.value = '';
+  if (removeBtn) removeBtn.style.display = 'none';
 }
 
 function previewBorrower(event) {
@@ -897,10 +917,9 @@ function validateForm() {
 
   /* Loan Proceeds */
   var proceedsChecked = !!document.querySelector('input[name="loanProceeds"]:checked');
-  var accountNum      = val('accountNumber');
   var proceedsErr     = document.getElementById('loanProceeds-err');
-  if (!proceedsChecked || !accountNum) {
-    errors.push('Loan Proceeds method and Account Number');
+  if (!proceedsChecked) {
+    errors.push('Loan Proceeds method');
     if (proceedsErr) proceedsErr.style.display = 'block';
   } else {
     if (proceedsErr) proceedsErr.style.display = 'none';
