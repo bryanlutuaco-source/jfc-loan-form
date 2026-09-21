@@ -145,7 +145,7 @@ input[type="checkbox"]:checked::after {
   <div id="successModalBox">
     <div class="check-icon">✅</div>
     <h2>Form Submitted!</h2>
-    <p>Your loan application has been successfully submitted. The JFC COOP team will review your application.</p>
+    <p>Your loan application has been successfully submitted. The JFC COOP team will review your application. Please allow up to <strong>3 business days</strong> for processing.</p>
     <button id="successCloseBtn" onclick="closeSuccessModal()">Close</button>
   </div>
 </div>
@@ -299,7 +299,7 @@ input[type="checkbox"]:checked::after {
   <td style="font-weight:bold; width:29%;">Middle</td>
   <td style="font-weight:bold; width:25%;">Last</td>
 </tr>
-<tr style="background:#dfe3f5;">
+<tr style="background:yellow;">
   <td></td>
   <td><input class="input" id="borrowerFirst" type="text"><span id="borrowerFirst-err" class="error-label" style="display:none;">First name is required.</span></td>
   <td><input class="input" id="borrowerMiddle" type="text"></td>
@@ -340,7 +340,7 @@ input[type="checkbox"]:checked::after {
 <tr>
   <td colspan="4" style="font-weight:bold;">
     Present Residence Address <span class="required-mark">*</span> <span style="font-size:12px; font-style:italic;">(No/Street/Subd/Barangay/Municipality/City)</span>
-    <div style="height:25px; background:#dfe3f5; margin-top:5px;"><input class="input" id="presentAddress" type="text"></div>
+    <div style="height:25px; background:yellow; margin-top:5px;"><input class="input" id="presentAddress" type="text"></div>
     <span id="presentAddress-err" class="error-label" style="display:none;">Present address is required.</span>
     <div style="margin-top:5px;">
       Length of Stay: <input type="text" id="presentStayYears" style="width:40px;"> Yr/s
@@ -358,7 +358,17 @@ input[type="checkbox"]:checked::after {
     </div>
   </td>
   <td colspan="2" style="background:#dfe3f5;">
-    <textarea id="additionalNotes" style="width:100%; height:90px; border:none; resize:none;"></textarea>
+    <textarea id="additionalNotes" placeholder="Additional notes (e.g. details on attached Company/Government ID and latest pay slips, or other remarks)" style="width:100%; height:60px; border:none; resize:none; background:transparent;"></textarea>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSf27nAe8xItcxzb2fc4mWrIBRliRGt9_hIBwmt-amN-otEVmw/viewform?usp=header"
+       target="_blank" rel="noopener"
+       style="display:inline-flex; align-items:center; gap:6px; margin-top:6px; padding:6px 12px;
+              background:#1a5276; color:#fff; font-family:Arial,sans-serif; font-size:12px; font-weight:bold;
+              text-decoration:none; border-radius:5px; box-shadow:0 1px 3px rgba(0,0,0,.2);">
+      &#128206; Upload Company/Government ID &amp; Pay Slips
+    </a>
+    <div style="font-size:10px; color:#555; font-family:Arial,sans-serif; margin-top:3px;">
+      Opens the secure upload form in a new tab. Files submitted there are matched to this application.
+    </div>
   </td>
 </tr>
 <tr><td colspan="4" style="font-weight:bold; font-size:16px;">EMPLOYMENT DETAILS OF BORROWER</td></tr>
@@ -368,7 +378,7 @@ input[type="checkbox"]:checked::after {
   <td style="font-weight:bold;">Mobile <span class="required-mark">*</span></td>
   <td style="font-weight:bold;">Work</td>
 </tr>
-<tr style="background:#dfe3f5;">
+<tr style="background:yellow;">
   <td></td>
   <td><input class="input" id="homePhone" type="tel" maxlength="11" placeholder="09XXXXXXXXX" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,11)"></td>
   <td><input class="input" id="mobilePhone" type="tel" maxlength="11" placeholder="09XXXXXXXXX" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,11)"><span id="mobilePhone-err" class="error-label" style="display:none;">Mobile number is required.</span></td>
@@ -379,19 +389,19 @@ input[type="checkbox"]:checked::after {
   <td colspan="2" style="font-weight:bold;">Personal <span class="required-mark">*</span></td>
   <td style="font-weight:bold;">Store</td>
 </tr>
-<tr style="background:#dfe3f5;">
+<tr style="background:yellow;">
   <td></td>
   <td colspan="2"><input class="input" id="personalEmail" type="email" placeholder="example@email.com"><span id="personalEmail-err" class="error-label" style="display:none;">Personal email is required.</span></td>
   <td><input class="input" id="storeEmail" type="email" placeholder="store@email.com"></td>
 </tr>
-<tr>
+<tr style="background:yellow;">
   <td style="font-weight:bold;">Company <span class="required-mark">*</span></td>
-  <td><input class="input" id="company" type="text"><span id="company-err" class="error-label" style="display:none;">Company is required.</span></td>
+  <td><input class="input" id="company" type="text" value="JFC COOP" readonly title="This field is locked to JFC COOP" style="background:#eee; cursor:not-allowed; font-weight:bold;"><span id="company-err" class="error-label" style="display:none;">Company is required.</span></td>
   <td colspan="2" style="font-weight:bold;">Location (Department/Store) <span class="required-mark">*</span></td>
 </tr>
-<tr style="background:#dfe3f5;">
+<tr style="background:yellow;">
   <td></td>
-  <td><input class="input" id="companyBranch" type="text"></td>
+  <td><input class="input" id="companyBranch" type="text" readonly value="JFC COOP" style="background:#eee; cursor:not-allowed;"></td>
   <td colspan="2"><input class="input" id="location" type="text"><span id="location-err" class="error-label" style="display:none;">Location is required.</span></td>
 </tr>
 <tr>
@@ -407,7 +417,7 @@ input[type="checkbox"]:checked::after {
     </table>
   </td>
 </tr>
-<tr style="background:#dfe3f5;">
+<tr style="background:yellow;">
   <td style="padding:4px; vertical-align:middle;">
     <input class="input" id="position" type="text">
     <span id="position-err" class="error-label" style="display:none;">Position is required.</span>
@@ -420,13 +430,13 @@ input[type="checkbox"]:checked::after {
     <input class="input" id="dateOfEmployment" type="date">
     <span id="dateOfEmployment-err" class="error-label" style="display:none;">Date of employment is required.</span>
   </td>
-  <td style="padding:0; background:#dfe3f5;">
+  <td style="padding:0; background:yellow;">
     <table style="width:100%; border-collapse:collapse; height:100%;">
       <tr>
-        <td style="border:none; border-right:1px solid black; padding:4px; background:#dfe3f5;">
+        <td style="border:none; border-right:1px solid black; padding:4px; background:yellow;">
   <input class="input" id="sssNumber" type="text" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
 </td>
-       <td style="border:none; padding:4px; background:#dfe3f5;">
+       <td style="border:none; padding:4px; background:yellow;">
   <input class="input" id="tinNumber" type="text" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
 </td>
         </td>
@@ -526,7 +536,7 @@ input[type="checkbox"]:checked::after {
   <td style="padding:2px 6px;">Middle</td>
   <td style="padding:2px 6px;">Last</td>
 </tr>
-<tr>
+<tr style="background:yellow;">
   <td colspan="2" id="superiorFullNameDisplay" style="padding:2px 6px; font-weight:bold;"></td>
   <td style="padding:2px;"><input type="text" id="superiorFirst" class="input" oninput="updateSuperiorFullName()"><span id="superiorFirst-err" class="error-label" style="display:none;">Superior's first name is required.</span></td>
   <td style="padding:2px;"><input type="text" id="superiorMiddle" class="input" oninput="updateSuperiorFullName()"></td>
@@ -539,7 +549,7 @@ input[type="checkbox"]:checked::after {
   <td style="padding:2px 6px;">Landline</td>
   <td style="padding:2px 6px;">Mobile <span class="required-mark">*</span></td>
 </tr>
-<tr>
+<tr style="background:yellow;">
   <td style="padding:2px;"><input class="input" id="superiorPosition"><span id="superiorPosition-err" class="error-label" style="display:none;">Superior's position is required.</span></td>
   <td style="padding:2px;"><input class="input" id="superiorYearsService" type="text" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></td>
   <td style="padding:2px;"><input class="input" id="superiorContactLabel" type="text" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></td>
@@ -608,7 +618,7 @@ I hereby certify that __________________________ of __________________________ C
         <img id="img1" class="sig-preview">
         <input type="file" class="file-input" accept="image/png,image/jpeg" onchange="previewSign(event,'img1')" style="display:none;">
       </label>
-      <div style="margin-top:5px;"><span style="background: yellow;">Co - Borrower Signature</span></div>
+      <div style="margin-top:5px;"><span style="background: yellow;">Co-Borrower's Signature</span></div>
     </div>
   </td>
   <td class="sig-cell" style="height:120px;">
@@ -617,7 +627,7 @@ I hereby certify that __________________________ of __________________________ C
         <img id="img2" class="sig-preview">
         <input type="file" class="file-input" accept="image/png,image/jpeg" onchange="previewSign(event,'img2')" style="display:none;">
       </label>
-      <div style="margin-top:5px;"><span style="background: yellow;">Co - Borrower Signature</span></div>
+      <div style="margin-top:5px;"><span style="background: yellow;">Co-Borrower's Signature</span></div>
     </div>
   </td>
   <td class="sig-cell" style="height:120px;">
@@ -626,7 +636,7 @@ I hereby certify that __________________________ of __________________________ C
         <img id="img3" class="sig-preview">
         <input type="file" class="file-input" accept="image/png,image/jpeg" onchange="previewSign(event,'img3')" style="display:none;">
       </label>
-      <div style="margin-top:5px;"><span style="background: yellow;"> Borrower Signature</span></div>
+      <div style="margin-top:5px;"><span style="background: yellow;">Borrower's Signature</span></div>
     </div>
   </td>
 </tr>
@@ -637,7 +647,7 @@ I hereby certify that __________________________ of __________________________ C
 <tr class="blackbar">
   <td colspan="4">LOAN PROCEEDS (place check) <span class="required-mark">*</span></td>
 </tr>
-<tr>
+<tr style="background:yellow;">
   <td><input type="radio" name="loanProceeds" value="Cheque"> Cheque</td>
   <td><input type="radio" name="loanProceeds" value="Fund Transfer"> Fund Transfer</td>
  <td>(Indicate Account Number) <span class="required-mark">*</span></td>
@@ -667,8 +677,8 @@ I do hereby authorize Jollibee Foods Corporation Employees' Multi-Purpose Cooper
 <!-- OFFSET + COOP USE -->
 <table style="margin-top:8px; width:100%; table-layout:fixed;">
 <tr>
-  <td width="60%" style="vertical-align:top;">
-    <b>LOAN OFFSET</b><br><br>
+  <td width="60%" style="vertical-align:top; background:#f2f2f2;" title="For JFC COOP office use only — not editable by applicant">
+    <b>LOAN OFFSET</b> <span style="font-size:10px; font-style:italic; color:#666;">(for JFC COOP use only)</span><br><br>
     Loans for Offsetting: ___________________________<br>
     Amount ___________________________<br><br>
     ___________________________<br>
@@ -679,7 +689,7 @@ I do hereby authorize Jollibee Foods Corporation Employees' Multi-Purpose Cooper
       <input type="file" id="borrowerFileInput" accept="image/*" style="display:none;" onchange="previewBorrower(event)">
       <button type="button" onclick="document.getElementById('borrowerFileInput').click();" style="position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:pointer;"></button>
       <img id="borrowerSigImg" style="display:none; position:absolute; bottom:22px; left:50%; transform:translateX(-50%); max-width:220px; max-height:70px; object-fit:contain; pointer-events:none;">
-      <div style="position:absolute; bottom:0; left:0; width:100%; border-top:1px solid black; text-align:center; padding-top:5px;">Borrower Signature</div>
+      <div style="position:absolute; bottom:0; left:0; width:100%; border-top:1px solid black; text-align:center; padding-top:5px;">Borrower's Signature</div>
     </div>
   </td>
   <td width="40%" style="vertical-align:top; text-align:left;">
@@ -733,62 +743,93 @@ function updateSuperiorFullName() {
     [first, middle, last].filter(Boolean).join(' ');
 }
 
+/* ── image resize helper ──
+   Mobile camera photos can be several MB each. Embedding several of them
+   as full-size base64 in the page (this form has up to 6 signature/photo
+   uploads) and then calling window.print() is a common cause of the
+   browser hanging or crashing, especially on phones. Every upload is
+   downscaled and re-compressed to a small JPEG before it's used. */
+function fileToResizedDataURL(file, maxDim, quality, callback) {
+  if (!file) return;
+  if (!file.type || file.type.indexOf('image/') !== 0) {
+    alert('Please upload an image file.');
+    return;
+  }
+  var reader = new FileReader();
+  reader.onload = function (e) {
+    var img = new Image();
+    img.onload = function () {
+      try {
+        var w = img.width, h = img.height;
+        if (w > maxDim || h > maxDim) {
+          if (w > h) { h = Math.round(h * maxDim / w); w = maxDim; }
+          else       { w = Math.round(w * maxDim / h); h = maxDim; }
+        }
+        var canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, w, h);
+        callback(canvas.toDataURL('image/jpeg', quality || 0.82));
+      } catch (err) {
+        console.error('Image resize failed, using original:', err);
+        callback(e.target.result);
+      }
+    };
+    img.onerror = function () { callback(e.target.result); };
+    img.src = e.target.result;
+  };
+  reader.onerror = function (err) { console.error('File read failed:', err); };
+  reader.readAsDataURL(file);
+}
+
 /* ── signature previews ── */
 function previewSign(event, imgId) {
   var file = event.target.files[0];
   if (!file) return;
-  var reader = new FileReader();
-  reader.onload = function(e) { document.getElementById(imgId).src = e.target.result; };
-  reader.readAsDataURL(file);
+  fileToResizedDataURL(file, 800, 0.82, function (dataUrl) {
+    document.getElementById(imgId).src = dataUrl;
+  });
 }
 
 function previewBorrower(event) {
   var file = event.target.files[0];
   if (!file) return;
-  var reader = new FileReader();
-  reader.onload = function(e) {
+  fileToResizedDataURL(file, 800, 0.82, function (dataUrl) {
     var img = document.getElementById('borrowerSigImg');
-    img.src = e.target.result;
+    img.src = dataUrl;
     img.style.display = 'block';
-  };
-  reader.readAsDataURL(file);
+  });
 }
 
 function previewSignature(event) {
   var file = event.target.files[0];
   if (!file) return;
-  var reader = new FileReader();
-  reader.onload = function(e) {
+  fileToResizedDataURL(file, 800, 0.82, function (dataUrl) {
     var img = document.getElementById('signatureImg');
-    img.src = e.target.result;
+    img.src = dataUrl;
     img.style.display = 'block';
-  };
-  reader.readAsDataURL(file);
+  });
 }
 
 document.getElementById('hrFileInput').addEventListener('change', function(event) {
   var file = event.target.files[0];
   if (!file) return;
-  var reader = new FileReader();
-  reader.onload = function(e) {
+  fileToResizedDataURL(file, 800, 0.82, function (dataUrl) {
     var img = document.getElementById('hrPreviewImg');
-    img.src = e.target.result;
+    img.src = dataUrl;
     img.style.display = 'block';
-  };
-  reader.readAsDataURL(file);
+  });
 });
 
 document.getElementById('signatureUpload').addEventListener('change', function(event) {
   var file = event.target.files[0];
   if (!file) return;
-  var reader = new FileReader();
-  reader.onload = function(e) {
+  fileToResizedDataURL(file, 800, 0.82, function (dataUrl) {
     var img = document.getElementById('signaturePreview');
-    img.src = e.target.result;
+    img.src = dataUrl;
     img.style.display = 'block';
     document.getElementById('signatureUpload').style.display = 'none';
-  };
-  reader.readAsDataURL(file);
+  });
 });
 
 /* ── validation ── */
