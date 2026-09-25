@@ -51,6 +51,7 @@ td { border: 1px solid black; padding: 6px; font-size: 14px; }
 .small-input { width: 80px; border: none; border-bottom: 1px solid black; }
 .checkbox-group div { margin: 2px 0; font-size: 14px; }
 .checkbox-group input { width: 14px; height: 14px; margin-right: 6px; }
+.checkbox-group label { cursor: pointer; }
 .row { display: flex; gap: 8px; margin-top: 8px; }
 .date { margin: 10px 0; font-size: 16px; }
 .date input { border: none; border-bottom: 1px solid black; width: 220px; }
@@ -59,9 +60,27 @@ input[type="checkbox"] {
   appearance: none; -webkit-appearance: none;
   width: 14px; height: 14px; border: 1.5px solid black;
   margin-right: 6px; vertical-align: middle; cursor: pointer; position: relative;
+  background: #fff;
 }
 input[type="checkbox"]:checked::after {
   content: "✓"; font-size: 12px; position: absolute; top: -2px; left: 1px;
+}
+input[type="checkbox"]:disabled, input[type="radio"]:disabled { opacity: .45; cursor: not-allowed; }
+
+/* ── #3 Uniform field color: every field takes the color of the row/box it sits in ── */
+input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+select, textarea {
+  background-color: transparent;
+}
+input:disabled { opacity: .5; cursor: not-allowed; }
+/* stop the browser autofill from painting fields white/blue */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+select:-webkit-autofill,
+textarea:-webkit-autofill {
+  -webkit-text-fill-color: #000;
+  transition: background-color 999999s ease-in-out 0s;
 }
 
 .field-error { border-bottom: 2px solid red !important; background-color: #fff0f0 !important; }
@@ -121,7 +140,20 @@ input[type="checkbox"]:checked::after {
 .sig-cell { text-align: center; vertical-align: middle; padding: 10px; }
 .upload-area { border: 1px dashed black; height: 70px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 .file-input { display: none; }
-.sig-preview { max-height: 60px; max-width: 100%; }
+.sig-preview { max-height: 60px; max-width: 100%; display: none; }
+
+/* ── #4 Remove e-signature button ── */
+.sig-remove {
+  display: none; margin-top: 4px; padding: 3px 10px;
+  font-family: Arial, sans-serif; font-size: 11px; font-weight: bold;
+  background: #fff; color: #c0392b; border: 1px solid #c0392b; border-radius: 4px; cursor: pointer;
+}
+.sig-remove.show { display: inline-block; }
+.sig-remove:hover { background: #c0392b; color: #fff; }
+
+/* ── #5 COOP-only section: not editable by applicants ── */
+.coop-only { background: #f2f2f2; user-select: none; }
+
 .justify-text { text-align: justify; line-height: 1.6; font-family: "Times New Roman", serif; font-size: 14px; }
 .section-title { text-align: center; font-weight: bold; margin-top: 15px; }
 .list-table { width: 100%; margin-top: 5px; font-size: 14px; }
@@ -232,51 +264,53 @@ input[type="checkbox"]:checked::after {
         Php <input class="input money" id="amountApplied" type="text" inputmode="decimal" placeholder="0.00">
         <span id="amountApplied-err" class="error-label" style="display:none;">Amount is required.</span>
       </div>
-     <div class="box" style="width:40%;">
-  <div class="yellow">Term <span class="required-mark">*</span></div>
-  <select class="input" id="loanTerm" style="border:none; border-bottom:1px solid black; background:transparent; width:100%; outline:none;">
-    <option value="">-- Select Term --</option>
-    <option value="3 months">3 months</option>
-    <option value="6 months">6 months</option>
-    <option value="9 months">9 months</option>
-    <option value="12 months">12 months</option>
-    <option value="18 months">18 months</option>
-    <option value="24 months">24 months</option>
-    <option value="30 months">30 months</option>
-    <option value="36 months">36 months</option>
-    <option value="48 months">48 months</option>
-    <option value="60 months">60 months</option>
-  </select>
-  <span id="loanTerm-err" class="error-label" style="display:none;">Loan term is required.</span>
-</div>
+      <div class="box" style="width:40%;">
+        <div class="yellow">Term <span class="required-mark">*</span></div>
+        <select class="input" id="loanTerm" style="border:none; border-bottom:1px solid black; width:100%; outline:none;">
+          <option value="">-- Select Term --</option>
+          <option value="3 months">3 months</option>
+          <option value="6 months">6 months</option>
+          <option value="9 months">9 months</option>
+          <option value="12 months">12 months</option>
+          <option value="18 months">18 months</option>
+          <option value="24 months">24 months</option>
+          <option value="30 months">30 months</option>
+          <option value="36 months">36 months</option>
+          <option value="48 months">48 months</option>
+          <option value="60 months">60 months</option>
+        </select>
+        <span id="loanTerm-err" class="error-label" style="display:none;">Loan term is required.</span>
+      </div>
     </div>
     <div class="row">
+      <!-- #1 Multiple entry: checkboxes instead of radio buttons -->
       <div class="box" style="width:60%;">
-        <div class="yellow">Purpose of Loan (Please check [✓]) <span class="required-mark">*</span></div>
+        <div class="yellow">Purpose of Loan (Please check all that apply [✓]) <span class="required-mark">*</span></div>
         <div class="checkbox-group" id="loanPurposeGroup">
-          <div><input type="radio" name="loanPurpose" value="Business/Investment"> Business/Investment</div>
-          <div><input type="radio" name="loanPurpose" value="Car and Maintenance"> Car and Maintenance</div>
-          <div><input type="radio" name="loanPurpose" value="Debt/Credit Card/Bills Payment"> Debt/Credit Card/Bills Payment</div>
-          <div><input type="radio" name="loanPurpose" value="Educational"> Educational</div>
-          <div><input type="radio" name="loanPurpose" value="Medical"> Medical</div>
-          <div><input type="radio" name="loanPurpose" value="Housing and Repairs"> Housing and Repairs</div>
-          <div><input type="radio" name="loanPurpose" value="Travel/Vacation"> Travel/Vacation</div>
-          <div><input type="radio" name="loanPurpose" value="Others"> Others</div>
+          <div><label><input type="checkbox" name="loanPurpose" value="Business/Investment"> Business/Investment</label></div>
+          <div><label><input type="checkbox" name="loanPurpose" value="Car and Maintenance"> Car and Maintenance</label></div>
+          <div><label><input type="checkbox" name="loanPurpose" value="Debt/Credit Card/Bills Payment"> Debt/Credit Card/Bills Payment</label></div>
+          <div><label><input type="checkbox" name="loanPurpose" value="Educational"> Educational</label></div>
+          <div><label><input type="checkbox" name="loanPurpose" value="Medical"> Medical</label></div>
+          <div><label><input type="checkbox" name="loanPurpose" value="Housing and Repairs"> Housing and Repairs</label></div>
+          <div><label><input type="checkbox" name="loanPurpose" value="Travel/Vacation"> Travel/Vacation</label></div>
+          <div><label><input type="checkbox" name="loanPurpose" value="Others" id="purposeOthersBox"> Others</label></div>
           <div>(Please Specify) <input class="small-input" id="purposeOther" style="width:300px;"></div>
         </div>
+        <span id="purposeOther-err" class="error-label" style="display:none;">Please specify the "Others" purpose.</span>
         <span id="loanPurpose-err" class="error-label" style="display:none;">Please select at least one loan purpose.</span>
       </div>
       <div class="box" style="width:40%;">
         <div class="yellow">How did you find out about this product? <span class="required-mark">*</span></div>
-        <div style="font-size:13px;"><b>Through:</b><br>Please check [✓]</div>
+        <div style="font-size:13px;"><b>Through:</b><br>Please check all that apply [✓]</div>
         <div class="checkbox-group" id="howFoundGroup">
-          <div><input type="radio" name="howFound" value="FB"> FB</div>
-          <div><input type="radio" name="howFound" value="Viber"> Viber</div>
-          <div><input type="radio" name="howFound" value="Email Ads"> Email Ads</div>
-          <div><input type="radio" name="howFound" value="Pre-Approved"> Pre-Approved</div>
-          <div><input type="radio" name="howFound" value="SMS"> SMS</div>
+          <div><label><input type="checkbox" name="howFound" value="FB"> FB</label></div>
+          <div><label><input type="checkbox" name="howFound" value="Viber"> Viber</label></div>
+          <div><label><input type="checkbox" name="howFound" value="Email Ads"> Email Ads</label></div>
+          <div><label><input type="checkbox" name="howFound" value="Pre-Approved"> Pre-Approved</label></div>
+          <div><label><input type="checkbox" name="howFound" value="SMS"> SMS</label></div>
         </div>
-        <span id="howFound-err" class="error-label" style="display:none;">Please select how you found out.</span>
+        <span id="howFound-err" class="error-label" style="display:none;">Please select at least one option.</span>
       </div>
     </div>
   </div>
@@ -284,18 +318,19 @@ input[type="checkbox"]:checked::after {
   <div class="box">
     <div class="yellow">
       Member of other Financing Institutions?
-      <label><input type="radio" name="memberOtherFI" value="Yes"> Yes</label>
-      <label><input type="radio" name="memberOtherFI" value="No"> No</label>
+      <label><input type="radio" name="memberOtherFI" value="Yes" onchange="toggleFI()"> Yes</label>
+      <label><input type="radio" name="memberOtherFI" value="No" onchange="toggleFI()"> No</label>
     </div>
     <div style="margin-top:8px; font-size:14px;">
+      <div style="font-size:12px; font-style:italic; margin-bottom:4px;">Check all that apply [✓]</div>
       <div style="margin:4px 0;">
-        <label><input type="radio" name="fiType" value="Credit Card"> Credit Card (Bank Name: <input style="width:80px; border:none; border-bottom:1px solid black;" id="creditCardBank">)</label>
+        <label><input type="checkbox" name="fiType" value="Credit Card" id="fiCreditCard"> Credit Card (Bank Name: <input style="width:80px; border:none; border-bottom:1px solid black;" id="creditCardBank">)</label>
       </div>
       <div style="margin:4px 0;">
-        <label><input type="radio" name="fiType" value="Online Lending"> Online Lending Apps (Specify: <input style="width:80px; border:none; border-bottom:1px solid black;" id="onlineLendingApp">)</label>
+        <label><input type="checkbox" name="fiType" value="Online Lending" id="fiOnlineLending"> Online Lending Apps (Specify: <input style="width:80px; border:none; border-bottom:1px solid black;" id="onlineLendingApp">)</label>
       </div>
-      <div style="margin:4px 0;"><label><input type="radio" name="fiType" value="Gcash"> Gcash</label></div>
-      <div style="margin:4px 0;"><label><input type="radio" name="fiType" value="Maya"> Maya</label></div>
+      <div style="margin:4px 0;"><label><input type="checkbox" name="fiType" value="Gcash"> Gcash</label></div>
+      <div style="margin:4px 0;"><label><input type="checkbox" name="fiType" value="Maya"> Maya</label></div>
       <div style="margin-top:10px; text-align:center;">
         <img src="https://i.postimg.cc/8k0fvZF1/unnamed.webp" alt="Supporting Image" style="max-width:100%; height:auto; border:1px solid #ccc;">
       </div>
@@ -370,7 +405,7 @@ input[type="checkbox"]:checked::after {
     </div>
   </td>
   <td colspan="2" style="background:#dfe3f5;">
-    <textarea id="additionalNotes" placeholder="Additional notes (e.g. details on attached Company/Government ID and latest pay slips, or other remarks)" style="width:100%; height:60px; border:none; resize:none; background:transparent;"></textarea>
+    <textarea id="additionalNotes" placeholder="Additional notes (e.g. details on attached Company/Government ID and latest pay slips, or other remarks)" style="width:100%; height:60px; border:none; resize:none;"></textarea>
     <a href="https://docs.google.com/forms/d/e/1FAIpQLSf27nAe8xItcxzb2fc4mWrIBRliRGt9_hIBwmt-amN-otEVmw/viewform?usp=header"
        target="_blank" rel="noopener"
        style="display:inline-flex; align-items:center; gap:6px; margin-top:6px; padding:6px 12px;
@@ -406,14 +441,15 @@ input[type="checkbox"]:checked::after {
   <td colspan="2"><input class="input" id="personalEmail" type="email" placeholder="example@email.com"><span id="personalEmail-err" class="error-label" style="display:none;">Personal email is required.</span></td>
   <td><input class="input" id="storeEmail" type="email" placeholder="store@email.com"></td>
 </tr>
+<!-- #2 Upper company field is now blank; lower field is editable -->
 <tr style="background:yellow;">
   <td style="font-weight:bold;">Company <span class="required-mark">*</span></td>
-  <td><input class="input" id="company" type="text" value="JFC COOP" readonly title="This field is locked to JFC COOP" style="background:#eee; cursor:not-allowed; font-weight:bold;"><span id="company-err" class="error-label" style="display:none;">Company is required.</span></td>
+  <td></td>
   <td colspan="2" style="font-weight:bold;">Location (Department/Store) <span class="required-mark">*</span></td>
 </tr>
 <tr style="background:yellow;">
   <td></td>
-  <td><input class="input" id="companyBranch" type="text" readonly value="JFC COOP" style="background:#eee; cursor:not-allowed;"></td>
+  <td><input class="input" id="company" type="text" placeholder="Company name"><span id="company-err" class="error-label" style="display:none;">Company is required.</span></td>
   <td colspan="2"><input class="input" id="location" type="text"><span id="location-err" class="error-label" style="display:none;">Location is required.</span></td>
 </tr>
 <tr>
@@ -584,6 +620,7 @@ I hereby certify that __________________________ of __________________________ C
     <div style="width:350px; border-top:1px solid black; text-align:center; padding-top:5px; margin-top:90px; cursor:pointer;" onclick="document.getElementById('hrFileInput').click();">
       <b>Human Resource Representative's Signature Over Printed Name/Date</b>
     </div>
+    <button type="button" class="sig-remove no-print" id="hrPreviewImg-remove" onclick="removeSig('hrPreviewImg','hrFileInput')">✕ Remove signature</button>
   </div>
 </div>
 </td>
@@ -628,27 +665,30 @@ I hereby certify that __________________________ of __________________________ C
     <div style="display:flex; flex-direction:column; height:100%;">
       <label class="upload-area" style="flex:1; cursor:pointer; border:none; outline:none;">
         <img id="img1" class="sig-preview">
-        <input type="file" class="file-input" accept="image/png,image/jpeg" onchange="previewSign(event,'img1')" style="display:none;">
+        <input type="file" id="sigFile1" class="file-input" accept="image/png,image/jpeg" onchange="previewSign(event,'img1')" style="display:none;">
       </label>
       <div style="margin-top:5px;"><span style="background: yellow;">Co-Borrower's Signature</span></div>
+      <div><button type="button" class="sig-remove no-print" id="img1-remove" onclick="removeSig('img1','sigFile1')">✕ Remove signature</button></div>
     </div>
   </td>
   <td class="sig-cell" style="height:120px;">
     <div style="display:flex; flex-direction:column; height:100%;">
       <label class="upload-area" style="flex:1; cursor:pointer; border:none; outline:none;">
         <img id="img2" class="sig-preview">
-        <input type="file" class="file-input" accept="image/png,image/jpeg" onchange="previewSign(event,'img2')" style="display:none;">
+        <input type="file" id="sigFile2" class="file-input" accept="image/png,image/jpeg" onchange="previewSign(event,'img2')" style="display:none;">
       </label>
       <div style="margin-top:5px;"><span style="background: yellow;">Co-Borrower's Signature</span></div>
+      <div><button type="button" class="sig-remove no-print" id="img2-remove" onclick="removeSig('img2','sigFile2')">✕ Remove signature</button></div>
     </div>
   </td>
   <td class="sig-cell" style="height:120px;">
     <div style="display:flex; flex-direction:column; height:100%;">
       <label class="upload-area" style="flex:1; cursor:pointer; border:none; outline:none;">
         <img id="img3" class="sig-preview">
-        <input type="file" class="file-input" accept="image/png,image/jpeg" onchange="previewSign(event,'img3')" style="display:none;">
+        <input type="file" id="sigFile3" class="file-input" accept="image/png,image/jpeg" onchange="previewSign(event,'img3')" style="display:none;">
       </label>
       <div style="margin-top:5px;"><span style="background: yellow;">Borrower's Signature</span></div>
+      <div><button type="button" class="sig-remove no-print" id="img3-remove" onclick="removeSig('img3','sigFile3')">✕ Remove signature</button></div>
     </div>
   </td>
 </tr>
@@ -660,13 +700,14 @@ I hereby certify that __________________________ of __________________________ C
   <td colspan="4">LOAN PROCEEDS (place check) <span class="required-mark">*</span></td>
 </tr>
 <tr style="background:yellow;">
-  <td><input type="radio" name="loanProceeds" value="Cheque"> Cheque</td>
-  <td><input type="radio" name="loanProceeds" value="Fund Transfer"> Fund Transfer</td>
-  <td>(Indicate Account Number) <span class="required-mark">*</span></td>
-  <td><input type="text" id="accountNumber" placeholder="Account Number" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')" style="width:100%; border:none; outline:none;"></td>
+  <td><label><input type="radio" name="loanProceeds" value="Cheque"> Cheque</label></td>
+  <td><label><input type="radio" name="loanProceeds" value="Fund Transfer"> Fund Transfer</label></td>
+  <!-- #6 Account number is optional -->
+  <td>(Indicate Account Number)</td>
+  <td><input type="text" id="accountNumber" placeholder="Account Number (optional)" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')" style="width:100%; border:none; border-bottom:1px solid black; outline:none;"></td>
 </tr>
 <tr>
-  <td colspan="4"><span id="loanProceeds-err" class="error-label" style="display:none;">Please select loan proceeds method and enter account number.</span></td>
+  <td colspan="4"><span id="loanProceeds-err" class="error-label" style="display:none;">Please select a loan proceeds method.</span></td>
 </tr>
 <tr>
 <td colspan="4">
@@ -681,6 +722,7 @@ I do hereby authorize Jollibee Foods Corporation Employees' Multi-Purpose Cooper
       <div>Borrower's Signature Over Printed Name</div>
     </div>
   </div>
+  <button type="button" class="sig-remove no-print" id="signaturePreview-remove" onclick="removeSig('signaturePreview','signatureUpload')">✕ Remove signature</button>
 </div>
 </td>
 </tr>
@@ -703,19 +745,21 @@ I do hereby authorize Jollibee Foods Corporation Employees' Multi-Purpose Cooper
       <img id="borrowerSigImg" style="display:none; position:absolute; bottom:22px; left:50%; transform:translateX(-50%); max-width:220px; max-height:70px; object-fit:contain; pointer-events:none;">
       <div style="position:absolute; bottom:0; left:0; width:100%; border-top:1px solid black; text-align:center; padding-top:5px;">Borrower's Signature</div>
     </div>
+    <div style="text-align:right;">
+      <button type="button" class="sig-remove no-print" id="borrowerSigImg-remove" onclick="removeSig('borrowerSigImg','borrowerFileInput')">✕ Remove signature</button>
+    </div>
   </td>
-  <td width="40%" style="vertical-align:top; text-align:left;">
+  <!-- #5 FOR JFC COOP USE ONLY: read-only for applicants (no inputs, no signature upload) -->
+  <td width="40%" class="coop-only" style="vertical-align:top; text-align:left;">
     <b style="display:block; margin-bottom:10px;">FOR JFC COOP USE ONLY</b>
     Remarks: ___________________________<br><br>
     Interviewed by: ___________________________<br><br>
     Amount Approved: Php ___________________<br>
     Term: ___________________<br><br>
     <div style="position:relative; width:250px; height:100px; margin-top:80px; margin-left:auto;">
-      <input type="file" id="signatureFileInput" accept="image/*" style="display:none;" onchange="previewSignature(event)">
-      <button type="button" onclick="document.getElementById('signatureFileInput').click();" style="position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:pointer;"></button>
-      <img id="signatureImg" style="display:none; position:absolute; bottom:22px; left:50%; transform:translateX(-50%); max-width:220px; max-height:70px; object-fit:contain; pointer-events:none;">
       <div style="position:absolute; bottom:0; left:0; width:100%; border-top:1px solid black; text-align:center; padding-top:5px;">Signature</div>
     </div>
+    <div class="no-print" style="font-size:11px; font-style:italic; color:#666; margin-top:8px; font-family:Arial,sans-serif;">This section is completed by JFC COOP staff.</div>
   </td>
 </tr>
 </table>
@@ -760,12 +804,45 @@ function getRadio(name) {
   return el ? el.value : '';
 }
 
+/* returns all checked values of a checkbox group, joined with ", " */
+function getChecked(name) {
+  var boxes = document.querySelectorAll('input[name="' + name + '"]:checked');
+  return Array.prototype.map.call(boxes, function (b) { return b.value; });
+}
+
 function updateSuperiorFullName() {
   var first  = document.getElementById('superiorFirst').value;
   var middle = document.getElementById('superiorMiddle').value;
   var last   = document.getElementById('superiorLast').value;
   document.getElementById('superiorFullNameDisplay').textContent =
     [first, middle, last].filter(Boolean).join(' ');
+}
+
+/* ── #1 multiple entry helpers ── */
+/* typing in "Please specify" automatically ticks "Others" */
+document.getElementById('purposeOther').addEventListener('input', function () {
+  if (this.value.trim()) document.getElementById('purposeOthersBox').checked = true;
+});
+/* typing a bank / app name automatically ticks its checkbox */
+document.getElementById('creditCardBank').addEventListener('input', function () {
+  if (this.value.trim()) document.getElementById('fiCreditCard').checked = true;
+});
+document.getElementById('onlineLendingApp').addEventListener('input', function () {
+  if (this.value.trim()) document.getElementById('fiOnlineLending').checked = true;
+});
+
+/* "No" clears and locks the financing-institution options */
+function toggleFI() {
+  var isNo = getRadio('memberOtherFI') === 'No';
+  document.querySelectorAll('input[name="fiType"]').forEach(function (b) {
+    b.disabled = isNo;
+    if (isNo) b.checked = false;
+  });
+  ['creditCardBank', 'onlineLendingApp'].forEach(function (id) {
+    var el = document.getElementById(id);
+    el.disabled = isNo;
+    if (isNo) el.value = '';
+  });
 }
 
 /* ── image resize helper ── */
@@ -802,52 +879,51 @@ function fileToResizedDataURL(file, maxDim, quality, callback) {
   reader.readAsDataURL(file);
 }
 
-/* ── signature previews ── */
+/* ── #4 show / remove e-signatures ── */
+function showSig(imgId, dataUrl) {
+  var img = document.getElementById(imgId);
+  img.src = dataUrl;
+  img.style.display = 'block';
+  var btn = document.getElementById(imgId + '-remove');
+  if (btn) btn.classList.add('show');
+}
+
+function removeSig(imgId, inputId) {
+  var img = document.getElementById(imgId);
+  img.removeAttribute('src');
+  img.style.display = 'none';
+  var input = document.getElementById(inputId);
+  if (input) {
+    input.value = '';                                  // lets the same file be chosen again
+    if (inputId === 'signatureUpload') input.style.display = 'block'; // re-enable the upload area
+  }
+  var btn = document.getElementById(imgId + '-remove');
+  if (btn) btn.classList.remove('show');
+}
+
 function previewSign(event, imgId) {
   var file = event.target.files[0];
   if (!file) return;
-  fileToResizedDataURL(file, 800, 0.82, function (dataUrl) {
-    document.getElementById(imgId).src = dataUrl;
-  });
+  fileToResizedDataURL(file, 800, 0.82, function (dataUrl) { showSig(imgId, dataUrl); });
 }
 
 function previewBorrower(event) {
   var file = event.target.files[0];
   if (!file) return;
-  fileToResizedDataURL(file, 800, 0.82, function (dataUrl) {
-    var img = document.getElementById('borrowerSigImg');
-    img.src = dataUrl;
-    img.style.display = 'block';
-  });
-}
-
-function previewSignature(event) {
-  var file = event.target.files[0];
-  if (!file) return;
-  fileToResizedDataURL(file, 800, 0.82, function (dataUrl) {
-    var img = document.getElementById('signatureImg');
-    img.src = dataUrl;
-    img.style.display = 'block';
-  });
+  fileToResizedDataURL(file, 800, 0.82, function (dataUrl) { showSig('borrowerSigImg', dataUrl); });
 }
 
 document.getElementById('hrFileInput').addEventListener('change', function(event) {
   var file = event.target.files[0];
   if (!file) return;
-  fileToResizedDataURL(file, 800, 0.82, function (dataUrl) {
-    var img = document.getElementById('hrPreviewImg');
-    img.src = dataUrl;
-    img.style.display = 'block';
-  });
+  fileToResizedDataURL(file, 800, 0.82, function (dataUrl) { showSig('hrPreviewImg', dataUrl); });
 });
 
 document.getElementById('signatureUpload').addEventListener('change', function(event) {
   var file = event.target.files[0];
   if (!file) return;
   fileToResizedDataURL(file, 800, 0.82, function (dataUrl) {
-    var img = document.getElementById('signaturePreview');
-    img.src = dataUrl;
-    img.style.display = 'block';
+    showSig('signaturePreview', dataUrl);
     document.getElementById('signatureUpload').style.display = 'none';
   });
 });
@@ -880,7 +956,8 @@ function validateForm() {
     else           { showErr(id, false); }
   }
 
-  function checkRadio(name, errId, label) {
+  /* works for both radio groups and checkbox groups (at least one checked) */
+  function checkGroup(name, errId, label) {
     var checked = !!document.querySelector('input[name="' + name + '"]:checked');
     var el = document.getElementById(errId + '-err');
     if (!checked) { errors.push(label); if (el) el.style.display = 'block'; }
@@ -893,15 +970,22 @@ function validateForm() {
   /* Loan Details */
   checkField('amountApplied', 'Amount Applied');
   checkField('loanTerm', 'Loan Term');
-  checkRadio('loanPurpose',        'loanPurpose',        'Loan Purpose');
-  checkRadio('howFound',           'howFound',           'How did you find out about this product?');
+  checkGroup('loanPurpose', 'loanPurpose', 'Loan Purpose');
+  var othersChecked = document.getElementById('purposeOthersBox').checked;
+  if (othersChecked && !val('purposeOther')) {
+    errors.push('Loan Purpose "Others" – please specify');
+    showErr('purposeOther', true);
+  } else {
+    showErr('purposeOther', false);
+  }
+  checkGroup('howFound', 'howFound', 'How did you find out about this product?');
 
   /* Borrower Personal */
   checkField('borrowerFirst', 'Borrower First Name');
   checkField('borrowerLast',  'Borrower Last Name');
-  checkRadio('civilStatus',        'civilStatus',        'Civil Status');
+  checkGroup('civilStatus', 'civilStatus', 'Civil Status');
   checkField('dateOfBirth', 'Date of Birth');
-  checkRadio('residenceOwnership', 'residenceOwnership', 'Residence Ownership');
+  checkGroup('residenceOwnership', 'residenceOwnership', 'Residence Ownership');
   checkField('presentAddress', 'Present Residence Address');
 
   /* Borrower Employment */
@@ -919,16 +1003,8 @@ function validateForm() {
   checkField('superiorPosition', "Immediate Superior's Position");
   checkField('superiorMobile',   "Immediate Superior's Mobile Number");
 
-  /* Loan Proceeds */
-  var proceedsChecked = !!document.querySelector('input[name="loanProceeds"]:checked');
-  var accountNum      = val('accountNumber');
-  var proceedsErr     = document.getElementById('loanProceeds-err');
-  if (!proceedsChecked || !accountNum) {
-    errors.push('Loan Proceeds method and Account Number');
-    if (proceedsErr) proceedsErr.style.display = 'block';
-  } else {
-    if (proceedsErr) proceedsErr.style.display = 'none';
-  }
+  /* Loan Proceeds – method required, account number optional (#6) */
+  checkGroup('loanProceeds', 'loanProceeds', 'Loan Proceeds method');
 
   return errors;
 }
@@ -943,20 +1019,21 @@ function closeSuccessModal() {
   document.getElementById('successModal').classList.remove('show');
 }
 
+function showValidationErrors(errors) {
+  var list = document.getElementById('validationModalList');
+  list.innerHTML = '';
+  errors.forEach(function(err) {
+    var li = document.createElement('li');
+    li.textContent = err;
+    list.appendChild(li);
+  });
+  document.getElementById('validationModal').classList.add('show');
+}
+
 /* ── submit ── */
 function submitForm() {
   var errors = validateForm();
-  if (errors.length > 0) {
-    var list = document.getElementById('validationModalList');
-    list.innerHTML = '';
-    errors.forEach(function(err) {
-      var li = document.createElement('li');
-      li.textContent = err;
-      list.appendChild(li);
-    });
-    document.getElementById('validationModal').classList.add('show');
-    return;
-  }
+  if (errors.length > 0) { showValidationErrors(errors); return; }
 
   var statusEl = document.getElementById('submitStatus');
   statusEl.textContent = 'Submitting… please wait';
@@ -964,14 +1041,19 @@ function submitForm() {
 
   var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbySZ24MCKlwOrdQVB8ea2XTdJHuaaup3_5ar4d1oI6rQZTBtLpD8amwLrq7S0YuezeS/exec";
 
+  /* multiple loan purposes, with the "Others" specification folded in */
+  var purposes = getChecked('loanPurpose').map(function (p) {
+    return (p === 'Others' && val('purposeOther')) ? 'Others: ' + val('purposeOther') : p;
+  }).join(', ');
+
   /* Fields in the EXACT same order as the Google Sheet columns. */
   var formData = {
     date:                val('formDate'),
 
     amountApplied:       val('amountApplied').replace(/,/g, ''),
     loanTerm:            val('loanTerm'),
-    loanPurpose:         getRadio('loanPurpose'),
-    howFound:            getRadio('howFound'),
+    loanPurpose:         purposes,
+    howFound:            getChecked('howFound').join(', '),
 
     firstName:           val('borrowerFirst'),
     middleName:          val('borrowerMiddle'),
@@ -1051,17 +1133,7 @@ function submitForm() {
 /* ── generate PDF ── */
 function generatePDF() {
   var errors = validateForm();
-  if (errors.length > 0) {
-    var list = document.getElementById('validationModalList');
-    list.innerHTML = '';
-    errors.forEach(function(err) {
-      var li = document.createElement('li');
-      li.textContent = err;
-      list.appendChild(li);
-    });
-    document.getElementById('validationModal').classList.add('show');
-    return;
-  }
+  if (errors.length > 0) { showValidationErrors(errors); return; }
   var bar    = document.getElementById('formActionBar');
   var status = document.getElementById('submitStatus');
   bar.style.display    = 'none';
