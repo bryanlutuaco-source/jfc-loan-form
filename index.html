@@ -431,26 +431,38 @@ textarea:-webkit-autofill {
   <td><input class="input" id="mobilePhone" type="tel" maxlength="11" placeholder="09XXXXXXXXX" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,11)"><span id="mobilePhone-err" class="error-label" style="display:none;">Mobile number is required.</span></td>
   <td><input class="input" id="workPhone" type="tel" maxlength="11" placeholder="09XXXXXXXXX" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,11)"></td>
 </tr>
-<tr>
-  <td style="font-weight:bold;">Email Address</td>
-  <td colspan="2" style="font-weight:bold;">Personal <span class="required-mark">*</span></td>
-  <td style="font-weight:bold;">Store</td>
-</tr>
+<!-- Email Address on a single line -->
 <tr style="background:yellow;">
-  <td></td>
-  <td colspan="2"><input class="input" id="personalEmail" type="email" placeholder="example@email.com"><span id="personalEmail-err" class="error-label" style="display:none;">Personal email is required.</span></td>
-  <td><input class="input" id="storeEmail" type="email" placeholder="store@email.com"></td>
+  <td colspan="4" style="padding:6px;">
+    <div style="display:flex; align-items:flex-start; gap:10px;">
+      <b style="white-space:nowrap;">Email Address &mdash; Personal <span class="required-mark">*</span> :</b>
+      <div style="flex:1;">
+        <input class="input" id="personalEmail" type="email" placeholder="example@email.com">
+        <span id="personalEmail-err" class="error-label" style="display:none;">Personal email is required.</span>
+      </div>
+      <b style="white-space:nowrap; margin-left:15px;">Store :</b>
+      <div style="flex:1;">
+        <input class="input" id="storeEmail" type="email" placeholder="store@email.com">
+      </div>
+    </div>
+  </td>
 </tr>
-<!-- #2 Upper company field is now blank; lower field is editable -->
+<!-- Company + Location on a single line -->
 <tr style="background:yellow;">
-  <td style="font-weight:bold;">Company <span class="required-mark">*</span></td>
-  <td></td>
-  <td colspan="2" style="font-weight:bold;">Location (Department/Store) <span class="required-mark">*</span></td>
-</tr>
-<tr style="background:yellow;">
-  <td></td>
-  <td><input class="input" id="company" type="text" placeholder="Company name"><span id="company-err" class="error-label" style="display:none;">Company is required.</span></td>
-  <td colspan="2"><input class="input" id="location" type="text"><span id="location-err" class="error-label" style="display:none;">Location is required.</span></td>
+  <td colspan="4" style="padding:6px;">
+    <div style="display:flex; align-items:flex-start; gap:10px;">
+      <b style="white-space:nowrap;">Company <span class="required-mark">*</span> :</b>
+      <div style="flex:1;">
+        <input class="input" id="company" type="text" placeholder="Company name">
+        <span id="company-err" class="error-label" style="display:none;">Company is required.</span>
+      </div>
+      <b style="white-space:nowrap; margin-left:15px;">Location (Department/Store) <span class="required-mark">*</span> :</b>
+      <div style="flex:1;">
+        <input class="input" id="location" type="text" placeholder="Department / Store">
+        <span id="location-err" class="error-label" style="display:none;">Location is required.</span>
+      </div>
+    </div>
+  </td>
 </tr>
 <tr>
   <td style="font-weight:bold; vertical-align:bottom; padding:4px;">Position <span class="required-mark">*</span></td>
